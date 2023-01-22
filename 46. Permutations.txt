@@ -1,0 +1,21 @@
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> permutations = new ArrayList<>(); 
+        
+        findPermutations(nums,new ArrayList<>(),permutations);
+        return permutations; 
+    }
+    
+    public void findPermutations(int[] nums, List<Integer> current,List<List<Integer>> permutations){
+        if(current.size() == nums.length){
+            permutations.add(new ArrayList<>(current));
+        }
+        
+        for(int i = 0; i < nums.length; i++){
+            if(current.contains(nums[i])) continue; 
+            current.add(nums[i]);
+            findPermutations( nums, current, permutations);
+            current.remove(current.size() - 1);
+        }
+    }
+}

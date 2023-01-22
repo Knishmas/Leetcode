@@ -1,0 +1,25 @@
+
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        
+        //If they're both on the left
+        
+        if(p.val < root.val && q.val < root.val){
+            return lowestCommonAncestor(root.left,p,q);
+        }
+        
+        //If they're both on the right
+        else if(p.val > root.val && q.val > root.val){
+           return lowestCommonAncestor(root.right,p,q);
+        }
+        
+        //recursively calling until we can find where both p & q are on different sides. 
+        // or until one of them is a child of another.
+        
+        //If they're on different sides then the root is the LCA
+        else{
+            return root;
+        }
+    }
+}

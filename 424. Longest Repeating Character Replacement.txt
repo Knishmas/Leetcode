@@ -1,0 +1,62 @@
+class Solution {
+    public int characterReplacement(String s, int k) {
+        
+        int maxRepeat = 0;
+        HashMap<Character,Integer> uniqueChar = new HashMap <Character, Integer>(); //For unique chars and to check
+        List<Character> longest = new  ArrayList();   // for utilization of the substrings and checking longest
+        int kCopy = k;
+        char[] sArray = s.toCharArray();
+        
+        if( s.length() == 0 ){return 0;}
+        if( s.length() == 1 ){return 0;}
+        
+        for(int i = 0; i <sArray.length -1 ; i++){
+            
+            if(!uniqueChar.containsKey(sArray[i])){     //GOOD
+                uniqueChar.put(sArray[i],i);
+            }
+            
+            if( (kCopy > 0) && (i + 1 <= sArray.length -1 ) && (sArray[i] != sArray[i + 1]) ){ // when K is greater or equal 0, the next number isn't out of bound. We're adding them to the longest
+                
+                uniqueChar.put(sArray[i],i);
+                    
+            }
+            
+             if( (kCopy > 0) && (i + 1 <= sArray.length -1 ) && (sArray[i] == sArray[i + 1]) ){
+                 longest.add(sArray[i]);
+                 kCopy--;
+             }
+            
+             if((kCopy == 0) && (sArray[i] != sArray[i + 1])){
+                 longest.add(sArray[i]);
+             }
+            
+            
+            if((kCopy == 0) && (sArray[i] == sArray[i + 1])) { // We've run into a duplicate and we're out of k's value
+                if(longest.size() > maxRepeat){
+                    maxRepeat = longest.size();
+                }
+                
+                //Resetting values here to in order to handle new substring analyzation
+                kCopy = k;
+                longest.clear();
+                uniqueChar.clear();
+            }
+                
+        
+        }
+        
+        
+        return maxRepeat;
+    }
+}
+
+               //WHEN WE FIND DUPLICATE THAT'S WHEN WE MINUS Kcopy
+               
+
+
+
+//Create a hashmap to input all the unique characters( doing this with a for loop)
+    // have a global int that's max and return it 
+    // As we're adding to the hashmap adding the unique chars, we start building an array, if there's a duplicate we decrement k.
+    // That array will be stopped when K is 0 and maxRepeat is updated to that value. The array then starts where it stopped and continues this process. 

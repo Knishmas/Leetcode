@@ -1,0 +1,25 @@
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        if (intervals.length <= 1) return intervals; 
+        
+        List<int[]> mergedIntervals = new ArrayList<>(); 
+        
+        //Sorting intervals by their starting point from least to greatest
+		Arrays.sort(intervals, (i1, i2) -> Integer.compare(i1[0], i2[0]));
+        
+        int[] currentInterval = intervals[0];
+        mergedIntervals.add(currentInterval);
+        for(int[] interval: intervals){
+            //if overlapping, merge
+            if(currentInterval[1] >= interval[0]){
+                currentInterval[1] = Math.max(currentInterval[1], interval[1]);
+            } else{
+                //Otherwise move currentInterval along
+                 currentInterval = interval;
+                 mergedIntervals.add(currentInterval);
+            }
+        }
+        
+        return mergedIntervals.toArray(new int[mergedIntervals.size()][]);
+    }
+}

@@ -1,0 +1,25 @@
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        
+        int length = nums.length;
+        
+        int[] answerArray = new int[nums.length];
+        
+        answerArray[0] = 1; 
+
+        //populating output array with pre-fix products
+        for(int i = 1; i < length; i++){
+            answerArray[i] = answerArray[i-1] * nums[i - 1 ];
+        }
+        
+        int right = 1;
+        for(int i = length - 1; i >= 0; i--){  
+            //multiply pre-fix with post-fix
+            answerArray[i] = right * answerArray[i]; 
+            right *= nums[i]; 
+        }
+        
+        return answerArray;
+        
+    }
+}

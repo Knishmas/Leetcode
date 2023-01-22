@@ -1,0 +1,48 @@
+class Solution {
+    public int search(int[] nums, int target) {
+        if(nums == null || nums.length == 0) return -1; 
+        
+        int left = 0;
+        int right = nums.length -1; 
+        
+        //finding rotation point if there is one 
+        while(left < right){
+            int middle = (left + right) / 2; 
+            
+            if(nums[middle] > nums[right]){
+                left = middle + 1; 
+            }else{
+                right = middle;
+            }
+        }
+        
+        int start = left; 
+        //resetting vals 
+        left = 0; 
+        right = nums.length -1;
+        
+        //figuring out which side of array to search
+        
+        if(target >= nums[start] && target <= nums[right]){
+            left = start;
+        } else{
+            right = start;
+        }
+        
+        //starting actual binary search 
+        
+        while(left <= right){
+            int middle = (left + right) / 2; 
+            if(nums[middle] == target){
+                return middle; 
+            } else if(nums[middle] < target){
+                left = middle + 1;
+            } else{
+                right = middle - 1;
+            }
+            
+        }
+        
+        return -1;
+    }
+}

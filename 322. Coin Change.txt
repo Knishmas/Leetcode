@@ -1,0 +1,22 @@
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        
+        //Accounting for position 0
+        int [] leastCoins = new int[amount + 1];
+        //Filling with an invalid amount to identy invalid #s, also so we can use math.min
+        Arrays.fill(leastCoins, amount + 1);
+        //Base case
+        leastCoins[0] = 0; 
+        
+        
+        for(int i = 0; i <= amount; i++){
+            //checking each coin value to get lowest # of coins for amount
+            for(int j = 0; j < coins.length; j++){
+                if(coins[j] <= i){
+                  leastCoins[i] = Math.min(leastCoins[i], 1 + leastCoins[i - coins[j]]);
+                }
+            }
+        }
+        return leastCoins[amount] > amount ? -1 : leastCoins[amount];
+    }
+}

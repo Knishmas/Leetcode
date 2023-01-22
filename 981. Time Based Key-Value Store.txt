@@ -1,0 +1,29 @@
+class TimeMap {
+    Map<String,TreeMap<Integer, String>> map = new  HashMap<>(); 
+    public TimeMap() {
+       
+    }
+    
+    public void set(String key, String value, int timestamp) {
+        // new instance of key
+       if(!map.containsKey(key)){
+           map.put(key, new TreeMap<>());
+       }
+            TreeMap<Integer,String> treeMap = map.get(key);
+            treeMap.put(timestamp,value);
+    }
+    
+    public String get(String key, int timestamp) {
+        //invalid key input
+        if(!map.containsKey(key)) return "";
+        
+        TreeMap<Integer, String> treeMap = map.get(key); 
+        
+        Integer timestampCheck = treeMap.floorKey(timestamp);
+        //if there's no timestamp that's <= 
+        if(timestampCheck == null) return ""; 
+        
+        return treeMap.get(timestampCheck); 
+    }
+}
+

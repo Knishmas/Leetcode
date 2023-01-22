@@ -1,0 +1,29 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        //base case
+        if(root == null) return null; 
+        
+        if(p == root || q ==root) return root; 
+        //Post-order traversal
+       TreeNode left = lowestCommonAncestor(root.left,p,q); 
+       TreeNode right = lowestCommonAncestor(root.right,p,q);
+        
+        if(left != null && right != null) return root; 
+        
+        //In the case that right is a child of left; 
+        if(left != null) return left; 
+        
+        //In the case that left is a child or right; 
+        return right; 
+        
+    }
+}

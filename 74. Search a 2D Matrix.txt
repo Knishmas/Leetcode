@@ -1,0 +1,25 @@
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        //run through every row and do a binary search
+        for(int i = 0;i < matrix.length; i++){
+            int left = 0;
+            int right = matrix[i].length -1;
+            //If the beginning of a row is > than target, we know if doesn't exist in the matrix. 
+            if(matrix[i][left] > target) return false; 
+            //Binary search 
+            while(left <= right){
+                int middle = left + (right - left) / 2; 
+                //when target is found
+                if(matrix[i][middle] == target){
+                    return true;
+                } else if(matrix[i][middle] < target){
+                    left = middle + 1; 
+                } else{
+                    right = middle -1; 
+                }
+            }
+        }
+
+        return false; 
+    }
+}

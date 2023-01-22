@@ -1,0 +1,27 @@
+class Solution {
+    public boolean isPalindrome(String s) {
+        
+        String formattedInput = ""; 
+        
+        for(char current: s.toCharArray()){
+            if (Character.isDigit(current) || Character.isLetter(current) ){
+                formattedInput += current; 
+            }
+        }
+        
+        formattedInput = formattedInput.toLowerCase(); 
+        
+        int left = 0;
+        int right = formattedInput.length() -1; 
+        
+        
+        while(left <= right){
+            if(formattedInput.charAt(left) != formattedInput.charAt(right)){
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true; 
+    }
+}

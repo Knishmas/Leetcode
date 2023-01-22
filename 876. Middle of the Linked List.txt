@@ -1,0 +1,31 @@
+class Solution {
+    public ListNode middleNode(ListNode head) {
+   
+        
+        int listLength = 0; 
+        ListNode current = head; 
+        int middlePosition = 0;
+        int position = 1;
+        
+        while(current != null){
+            listLength++;
+            current = current.next;
+        }
+        System.out.println("The length of the list is: " + listLength);
+        //resetting position of current
+        
+        current = head;
+      middlePosition = listLength / 2 + 1;
+       
+        System.out.println("Middlepoint is: " + middlePosition);
+        
+        while(position < middlePosition){
+           
+            current = current.next; 
+            position++;
+        }
+        
+      
+        return current;
+    }
+}

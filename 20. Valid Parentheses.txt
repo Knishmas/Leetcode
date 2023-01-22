@@ -1,0 +1,28 @@
+class Solution {
+    public boolean isValid(String s) {
+        
+        Stack<Character> isValid = new Stack<Character>();
+        
+        //if the string length isn't even then we know there is at least 1 non-pair of parenthesis
+        if(s.length() % 2 != 0){return false;}
+        
+        for(int i = 0; i < s.length(); i++){
+            if( s.charAt(i) == '(' || s.charAt(i) == '[' || s.charAt(i) == '{'){
+                isValid.push(s.charAt(i));
+            } else if(s.charAt(i) == ')' && !isValid.empty() && isValid.peek() == '('){
+                isValid.pop();
+            } else if(s.charAt(i) == ']' && !isValid.empty() &&  isValid.peek() == '['){
+                isValid.pop();
+            } else if(s.charAt(i) == '}' && !isValid.empty() && isValid.peek() == '{'){
+                isValid.pop();
+            } else{
+                return false;
+            }
+        }
+        //if our stack is empty then we know we found and popped all valid pairs
+        if(isValid.empty()){
+            return true;
+        }
+        return false;
+    }
+}

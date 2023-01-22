@@ -1,0 +1,23 @@
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+         //Note: You can insert the arrays into an arraylist 
+        
+        //Possible brute force solution: Convert each string into an arrayList of chars, sort the chars alphabetically, and then convert back to strings
+        //then with a nested loop go through an array of strings that are alphabetically sorted and use the .equal() method to determine if they're anagrams and then group them together
+        
+        List<Charracter>char_sorting = new ArrayList();
+        List<List<String>>sortedStrings= new ArrayList();
+        List<List<String>>answer= new ArrayList();
+        
+        
+        
+        
+        for(int i = 0; i < strs.length; i++){
+             char[] temporary =  new char[] {strs[i].toCharArray()};
+             Arrays.temporary.sort(); 
+             String sortedString = new String(temporary);
+             sortedStrings.add(sortedString); 
+            
+        }
+    }
+}

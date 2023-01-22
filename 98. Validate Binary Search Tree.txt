@@ -1,0 +1,26 @@
+
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        Stack<TreeNode> stack = new Stack();
+        
+        //Basically creating a incredibly low negative number for our first comparison with left val
+        double left_val = - Double.MAX_VALUE; 
+        
+        
+        while(!stack.isEmpty() || root != null){
+            //Traversing left side of the tree to the end 
+            while(root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            
+            root = stack.pop();
+            if(root.val <= left_val) return false;
+            left_val = root.val; 
+            
+            root = root.right;
+            
+        }
+        return true; 
+    }
+}

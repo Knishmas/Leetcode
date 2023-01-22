@@ -1,0 +1,32 @@
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        
+        //initiate list and vars 
+        List<int[]> newList = new ArrayList<>(); 
+        int i = 0; 
+        int n = intervals.length; 
+        
+        //Add all non-overlapping intervals 
+        while(i < n && intervals[i][1] < newInterval[0]){
+            newList.add(intervals[i++]);
+        }
+        
+        //merge overlapping variables
+        //Note: this may take multiple interations to merge all overlapping intervals
+        while(i < n && intervals[i][0] <= newInterval[1]){
+            newInterval[0] = Math.min(intervals[i][0],newInterval[0]);
+            newInterval[1] = Math.max(intervals[i][1],newInterval[1]); 
+            i++; 
+        } 
+        newList.add(newInterval);
+        
+        //add remaining non-overlapping intervals 
+        while(i < n){
+            newList.add(intervals[i++]);
+        }
+        
+        return newList.toArray(new int[newList.size()][2]);
+    }
+}
+
+

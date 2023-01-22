@@ -1,0 +1,31 @@
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        //
+        int bandaidFix = 0;
+        HashMap<Integer,Integer> frequencyMap = new HashMap<>(); 
+        int[] kArray = new int[k];
+        List<Integer> freqList = new ArrayList();
+            
+        //populating and incrementing elements and their frequency 
+        for(int i = 0; i < nums.length; i++){
+            if(!frequencyMap.containsKey(nums[i])){
+                frequencyMap.put(nums[i], 1);
+            } else{
+                frequencyMap.put(nums[i], frequencyMap.get(nums[i]) + 1); 
+            }
+        }
+        //now need to find their highest values 
+            var entrySet = frequencyMap.values();
+        
+            for(var entry: entrySet ){
+                freqList.push(entry.getValue());
+            }
+            Collections.sort(freqList);
+            
+            for(int j = freqList.size(); j > k; j--){
+                kArray[bandaidFix] = freqList[j];
+                bandaidFix++;
+            }
+            return kArray;
+    }
+}
