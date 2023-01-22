@@ -1,0 +1,28 @@
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int maxP = 0;
+        //finding max value within piles
+        for(int pile : piles){
+            maxP = Math.max(maxP, pile);
+        }
+        int left = 0; 
+        int right = maxP;
+
+        //binary search for lowest k
+        while(left < right){
+            int middle = left + (right - left) / 2; 
+            int hoursItTakes = 0;
+            //calculating how long it takes for each k value
+            for(int pile : piles){
+                 hoursItTakes += Math.ceil((double) pile / middle );
+            }
+            //shifting left and right depending on conditions. 
+            if(hoursItTakes <= h){
+                right = middle; 
+            } else{
+                left = middle + 1; 
+            }
+        }
+        return right; 
+    }
+}
