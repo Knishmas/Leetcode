@@ -1,48 +1,43 @@
 class Solution {
     public int search(int[] nums, int target) {
-        if(nums == null || nums.length == 0) return -1; 
-        
-        int left = 0;
+        //Runtime complexity:O(logn)
+        //Spacial complexity: O(1)
+
+        int left = 0; 
         int right = nums.length -1; 
-        
-        //finding rotation point if there is one 
+        //Find minimum through modified binary search, taking into account possible rotation. 
         while(left < right){
-            int middle = (left + right) / 2; 
-            
+            int middle = left + (right - left) / 2;
             if(nums[middle] > nums[right]){
                 left = middle + 1; 
-            }else{
+            } else{
                 right = middle;
             }
         }
-        
+
+        //resetting bounds and setting them according to which side of of the array we should search. 
         int start = left; 
-        //resetting vals 
-        left = 0; 
-        right = nums.length -1;
-        
-        //figuring out which side of array to search
-        
+        left = 0;
+        right = nums.length -1; 
+
         if(target >= nums[start] && target <= nums[right]){
-            left = start;
+            left = start; 
         } else{
             right = start;
         }
         
-        //starting actual binary search 
-        
+        //regular binary seearch
         while(left <= right){
-            int middle = (left + right) / 2; 
-            if(nums[middle] == target){
-                return middle; 
-            } else if(nums[middle] < target){
-                left = middle + 1;
-            } else{
-                right = middle - 1;
-            }
-            
+             int middle = left + (right - left) /2;
+             if(nums[middle] == target){
+                 return middle;
+             } else if(nums[middle] < target){
+                 left = middle + 1;
+             } else{
+                 right = middle - 1;
+             }
         }
-        
+        //if not found 
         return -1;
     }
 }
