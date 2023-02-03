@@ -1,24 +1,29 @@
 class Solution {
+    //Time complexity: O(n)
+    //Spacial complexity: O(n) It's possible every char could be unique within the input. 
     public int lengthOfLongestSubstring(String s) {
-        
-        HashSet<Character> uniqueChars = new HashSet<>();
-        int left = 0, right = 0, longest = 0;
-        
-        
-        while(right < s.length()){
-            //when we find unique char
-            if(!uniqueChars.contains(s.charAt(right))){
-                uniqueChars.add(s.charAt(right));
-                longest = Math.max(longest,uniqueChars.size()); 
-                right++;
-            }else{
-            //when the char is a duplicate
-                uniqueChars.remove(s.charAt(left));
+         //edge case: string is empty
+         if(s.length() == 0) return 0; 
+         int maxLength = 0;
+         //pointers left and right to analyze window of substrings
+         int left = 0; 
+         int right = 0; 
+         HashSet<Character> charTracker = new HashSet<>(); 
+
+        //Traversing s 
+         while(right < s.length()){
+            //Duplicate found
+             if(charTracker.contains(s.charAt(right))){
+                charTracker.remove(s.charAt(left));
                 left++;
-            }
-            
-        }
-        
-        return longest; 
+            //Unique char for substring
+             } else{
+                charTracker.add(s.charAt(right));
+                right++; 
+                maxLength = Math.max(charTracker.size(), maxLength);
+             }
+         }
+
+         return maxLength; 
     }
 }
