@@ -1,0 +1,27 @@
+class Solution {
+    //Time Complexity: O(n)
+    //Spacial Complexity: O(1)
+    public boolean checkInclusion(String s1, String s2) {
+        //edge cases
+        if(s1.length() > s2.length() || s2.length() == 0) return false; 
+        int[] s1CharFreq = new int[26];
+        int[] s2CharFreq = new int[26];
+        int windowSize = s1.length(); 
+
+        //populating s1 and s2 windows 
+        for(int i = 0; i < windowSize; i++){
+            s1CharFreq[s1.charAt(i) - 'a']++; 
+            s2CharFreq[s2.charAt(i) - 'a']++; 
+        }
+
+        for(int i = windowSize; i < s2.length(); i++){
+            //do current windows match? return true if so
+            if(Arrays.equals(s1CharFreq, s2CharFreq)) return true; 
+            //Updating window position on s2
+            s2CharFreq[s2.charAt(i - windowSize) - 'a']--;
+            s2CharFreq[s2.charAt(i) - 'a']++;
+        }
+        if(Arrays.equals(s1CharFreq, s2CharFreq)) return true; 
+        return false; 
+    }
+}
