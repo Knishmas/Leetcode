@@ -1,0 +1,19 @@
+class Solution {
+    //Iterative solution
+    //Time complexity: O(n)
+    //Spacial complexity O(1)
+    public ListNode reverseList(ListNode head) {
+        //Three pointer solution keeping track of the previous node, current, and next. 
+        //Update current.next to prev until we reach the end. Update pointers through each iteration. 
+        ListNode prev = null;
+        ListNode current = head; 
+
+        while(current != null){
+            ListNode next = current.next; 
+            current.next = prev; 
+            prev = current; 
+            current = next;
+        }
+        return prev;
+    }
+}
