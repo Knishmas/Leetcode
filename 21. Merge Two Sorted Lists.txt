@@ -1,43 +1,25 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
-
 class Solution {
+    //Time Complexity: O(n + m), n being nodes list 1 & m being nodes in list2
+    //Space complexity: O(1)
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-
-        //setting a dummy node 
-        ListNode dummyNode = new ListNode(0);
-        ListNode current = dummyNode;
-    
-        //While both lists aren't null we traverse and analyze them
-        while (list1 != null && list2 != null) {
-            if (list2.val > list1.val) {
+        //Making a dummy node to return head; 
+        ListNode mergedList = new ListNode(0);
+        ListNode current = mergedList; 
+        //Re-assign node pointers according to value comparisons
+        while(list1 != null && list2 != null){
+            if(list1.val < list2.val){
                 current.next = list1;
-                list1 = list1.next; 
-            } else {
-                current.next = list2;
-                list2 = list2.next;
+                list1 = list1.next;
+            } else{
+                current.next = list2; 
+                list2 = list2.next; 
             }
-            current = current.next;
+            current = current.next; 
         }
+        //In the case where one of the list still continues, we add the rest of it. 
+        if(list1 != null) current.next = list1; 
+        if(list2 != null) current.next = list2; 
 
-        //If statements to catch the cate in which one list ends and the other still has nodes in it
-        if (list1 != null) {
-            current.next = list1;
-            list1 = list1.next;
-        }
-        if (list2 != null) {
-            current.next = list2;
-            list2 = list2.next;
-        }
-        
-        return dummyNode.next;
+        return mergedList.next; 
     }
 }
