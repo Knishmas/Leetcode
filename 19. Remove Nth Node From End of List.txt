@@ -1,64 +1,69 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
+//Optimal solution - single pass no data structures. 
 class Solution {
+    //Run time complexity: O(n), 
+    //Spacial complexity: O(1)
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        int sizeCounter = 0;
-        int targetPosition = 0;
-        int tempCounter = 1;
-        
-        ListNode current = head;
-            
-        if (head == null){return null;}
-        if (n == 0){return head;}
-           
-        
-        
-        while (current != null){
-            sizeCounter++;
-            current = current.next;  
-            
-        }
-        
-        if(sizeCounter == 1 && n == 0){
-            return head;
-        }
-        
-        if(sizeCounter == 1 && n == 1){
-            return null;
-        }
-        
-        targetPosition = sizeCounter - n;
-        
-         current = head;
-        
-        for(int i = 0; i < sizeCounter; i++){
-            
+        if (head == null || head.next == null) return null;
+        ListNode dummy = new ListNode(0); 
+        dummy.next = head; 
+        ListNode slow = dummy, fast = dummy; 
 
-            if(tempCounter == targetPosition){
-                current.next = current.next.next;
-            }            
-            
-            if( current.next == null ){
-                return head;
-            }
-            tempCounter++;
-            current = current.next;
-            
+        //get fast pointer to the nth node from dummy
+        while(n > 0){
+            fast = fast.next; 
+            n--;
         }
+        //Get fast to the last node and slow to the node before the Nth Node From End of List.
+        while(fast.next != null){
+            fast = fast.next; 
+            slow = slow.next; 
+        }
+        //re-assign pointer
+        slow.next = slow.next.next; 
         
         
-        return head;
+        return dummy.next; 
     }
 }
+-----------------------------------------------------------------------------------------------------------------------------------
 
-//We need to find out how many steps until our right side first
-//We could do this by while  current.next !=
-//.
+//Stack solution: This could be done in a single pass improving runtime and without the use of a data structure like the stack.
+class Solution {
+    //Run time complexity: O(n), 
+    //Spacial complexity: O(n)
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if(head.next == null && n == 1) return null; 
+        ListNode current = head; 
+        Stack<ListNode> reverseList = new Stack<>(); 
+        int nodesLeft = n;
+        int totalNodes = 0;
+        ListNode nthFrontNode = null, nthBehindNode = null, nthNode = null;  
+
+        //Traversing through the end of the list and pushing all nodes to stack 
+        while(current != null){
+            reverseList.push(current); 
+            current = current.next; 
+            totalNodes++;
+        }
+
+        //In the case where head is nth node from the end. 
+        if(totalNodes == n){
+            head = head.next; 
+            return head; 
+        }
+
+        //stops at nth node from end 
+        while(nodesLeft > 0){
+            nthNode = reverseList.pop(); 
+            nthFrontNode = nthNode.next;
+            --nodesLeft;  
+        }
+
+        if(!reverseList.isEmpty() ){
+            nthBehindNode = reverseList.pop(); 
+            nthBehindNode.next = nthFrontNode;
+        }
+        nthNode.next = null; 
+        return head; 
+    }
+}
