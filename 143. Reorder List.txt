@@ -1,0 +1,54 @@
+class Solution {
+    //Time Complexity: O(n)
+    //Spacial Complexity: O(1)
+    public void reorderList(ListNode head) {
+        //3-step solution 
+        //1. Use slow and fast pointers to get the end, midpoint
+        //2. "Break" list in half and reverse 2nd half 
+        //3. Merge the two lists
+
+        //Edge case
+        if(head == null || head.next == null) return; 
+        ListNode slow = head, fast = head, prev = null, l1 = head; 
+
+        //Getting midpoint with pointers. 
+        while(fast != null && fast.next != null){
+            fast = fast.next.next; 
+            prev = slow; 
+            slow = slow.next; 
+        }
+
+        //"Breaking" list into 2
+        prev.next = null;
+        //Reversing 2nd half of the list
+        ListNode l2 = reverseList(slow); 
+        //Merging lists 
+        mergeList(l1,l2);
+    }
+
+    public ListNode reverseList(ListNode head){
+        ListNode current = head, prev = null; 
+        while(current != null){
+            ListNode next_node = current.next; 
+            current.next = prev; 
+            prev = current;
+            current = next_node; 
+        }
+        return prev;
+    }
+
+    private static void mergeList(ListNode l1, ListNode l2){
+        while(l1 != null){
+            ListNode l1_next = l1.next; 
+            ListNode l2_next = l2.next; 
+
+            l1.next = l2; 
+
+            if(l1_next == null) break; 
+            l2.next = l1_next; 
+            l1 = l1_next; 
+            l2 = l2_next; 
+        }
+    }
+}
+//Alternative solution: Could use a stack as a way of getting the 2nd half of the array in a reverse order although this would be a worse solution changing our spacial complexity from O(1) -> O(n)
