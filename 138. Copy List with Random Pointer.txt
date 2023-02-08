@@ -13,7 +13,7 @@ class Solution {
         }
         current = head;
 
-        //2nd pass: Assigning copies their next and random pointers based on their relation with the original nodes with the hash map; 
+        //2nd pass: Assigning copies their next and random pointers based on their relation with the original nodes with the hash map
         while(current != null){
             nodeRelation.get(current).next = nodeRelation.get(current.next); 
             nodeRelation.get(current).random = nodeRelation.get(current.random); 
