@@ -1,0 +1,32 @@
+
+class Solution {
+    //Time Complexity: O(n)
+    //Spacial Complexity: O(n)
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummy = new  ListNode(-1);
+        ListNode curr = dummy; 
+        ListNode curr1 = l1; 
+        ListNode curr2 = l2; 
+        int carry = 0; 
+
+        //while there are still nodes in either list or we still have a carry
+        while(curr1 != null || curr2 !=null || carry !=0){
+            //getting current values. If node is null then is considered 0
+            int curr1Val = (curr1 == null) ? 0 : curr1.val;
+            int curr2Val = (curr2 == null) ? 0 : curr2.val;
+            //Math
+            int currentSum = curr1Val + curr2Val + carry; 
+            int currentDigitSum = currentSum % 10; 
+            carry = currentSum / 10; 
+            //creating new node assigning it's value
+            ListNode currentNode = new ListNode(currentDigitSum);
+            curr.next = currentNode;
+            //updating nodes position
+            curr = curr.next;
+            curr1 = (curr1 == null) ? null : curr1.next; 
+            curr2 = (curr2 == null) ? null : curr2.next; 
+        } 
+
+        return dummy.next; 
+    }
+}
