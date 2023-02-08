@@ -1,0 +1,24 @@
+class Solution {
+    //Time complexity: O(n)
+    //Spacial complexity: O(n)
+    public Node copyRandomList(Node head) {
+        //Edge case: in the case where head is null
+        if(head == null) return null; 
+        HashMap<Node,Node> nodeRelation = new HashMap<>(); 
+        Node current = head; 
+        //1st pass: Mapping all original nodes with new nodes for copy.
+        while(current != null){
+            nodeRelation.put(current, new Node(current.val));
+            current = current.next; 
+        }
+        current = head;
+
+        //2nd pass: Assigning copies their next and random pointers based on their relation with the original nodes with the hash map; 
+        while(current != null){
+            nodeRelation.get(current).next = nodeRelation.get(current.next); 
+            nodeRelation.get(current).random = nodeRelation.get(current.random); 
+            current = current.next; 
+        }
+        return nodeRelation.get(head); 
+    }
+}
