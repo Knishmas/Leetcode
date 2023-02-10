@@ -1,0 +1,26 @@
+﻿class Solution {
+    public void sortColors(int[] nums) {
+        int start = 0;
+        int index = 0; 
+        int end = nums.length -1; 
+
+
+        //Shifting 0's to the left and 2s to the right. 1s will end up in the middle
+        while(index <= end && start < end){
+            if(nums[index] == 0){
+                nums[index] = nums[start];
+                nums[start] = 0;
+                start++;
+                index++;
+            } else if(nums[index] == 2){
+                nums[index] = nums[end];
+                nums[end] = 2;
+                end--;
+                //Don't increment index because we don't know what the swapped value is, must first see it to determine what to do
+            } else{
+                //in the case where we see 1, continue.
+                index++;
+            }
+        }
+    }
+}
