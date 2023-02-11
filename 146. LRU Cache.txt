@@ -1,0 +1,72 @@
+class LRUCache {
+    int cache_capacity; 
+    HashMap <Integer, Node> node_map; 
+    final Node dummyHead = new Node(); 
+    final Node dummyTail = new Node();
+
+    public LRUCache(int capacity) {
+        cache_capacity = capacity;
+        node_map = new HashMap(capacity); 
+        dummyHead.next = dummyTail; 
+        dummyTail.prev = dummyHead; 
+    }
+    
+    public int get(int key) {
+        int node_val = -1; 
+        Node current_node = node_map.get(key);
+        //if the node exists return it's value
+        if(current_node != null){
+            node_val = current_node.value; 
+            remove(current_node);
+            add(current_node);
+        } 
+        return node_val; 
+    }
+    
+    public void put(int key, int value) {
+        Node get_node = node_map.get(key); 
+        //If the node already exists, update value, and cache position
+        if(get_node != null){
+            remove(get_node);
+            get_node.value = value; 
+            add(get_node);   
+        } else{
+            //if we reach cache capacity remove least used; 
+            if(node_map.size() == cache_capacity){
+                node_map.remove(dummyTail.prev.key);
+                remove(dummyTail.prev);
+            }
+            //Adding new node to map and cache linked list
+            Node new_node = new Node(); 
+            new_node.key = key; 
+            new_node.value = value; 
+            node_map.put(key, new_node);
+            add(new_node); 
+        }
+
+    }
+
+    class Node{
+        int key;
+        int value; 
+        Node next; 
+        Node prev; 
+    }
+
+    public void add(Node node){
+        Node head_next = dummyHead.next; 
+        dummyHead.next = node; 
+        node.prev = dummyHead; 
+        node.next = head_next; 
+        head_next.prev = node;
+    }
+
+    public void remove(Node node){
+        Node prev_node = node.prev; 
+        Node next_node = node.next; 
+        next_node.prev = prev_node;
+        prev_node.next = next_node; 
+        
+    }
+}
+
