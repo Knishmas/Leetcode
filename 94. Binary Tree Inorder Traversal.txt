@@ -1,4 +1,4 @@
-//Recursive solution 
+//Iterative solution 
 //Time Complexity: O(n)
 //Space Complexity:O(n)
 class Solution {
@@ -22,5 +22,25 @@ class Solution {
     }
 
     return inorderList; 
+    }
+} 
+
+//----------------------------------------------------------------------
+//Recursive solution.
+//Time complexity: O(n)
+//Spacial complexity: O(n)
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> inorderList = new ArrayList<>(); 
+        helper(root, inorderList); 
+        return inorderList; 
+    }
+
+    public void helper(TreeNode root, List<Integer> list){
+        if(root == null) return; 
+        helper(root.left, list); 
+        list.add(root.val); 
+        helper(root.right, list);
+        
     }
 }
