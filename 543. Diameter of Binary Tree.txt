@@ -1,0 +1,22 @@
+class Solution {
+    //Solution: Add the max depth of the left sub-tree with max-depth of right subtree
+    //Time Complexity: O(n)
+    //Spacial complexity: O(n)
+    int maxDiameter = 0; 
+    public int diameterOfBinaryTree(TreeNode root) {
+        getMaxDiameter(root);
+        return maxDiameter; 
+    }
+
+    public int getMaxDiameter(TreeNode root){
+        //base case
+        if(root == null) return 0; 
+
+        int left = getMaxDiameter(root.left);
+        int right = getMaxDiameter(root.right);
+        //checking max to see if can be updated 
+        maxDiameter = Math.max(maxDiameter, left + right); 
+        //Max depth of left and right sub-tree
+        return 1 + Math.max(left,right);
+    }
+}
