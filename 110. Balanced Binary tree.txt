@@ -1,24 +1,22 @@
+//Time Complexity: O(n)
+//Spacial Complexity: O(n)
 class Solution {
-
-    private boolean result = true;
-
+    //Solution: Get height of left sub-tree and right subtree: get the absolute value of them being subtracted and if > 1 return false Otherwise return true 
+    boolean isBalance = true; 
     public boolean isBalanced(TreeNode root) {
-        maxDepth(root);
-        return result;
+        //if binary tree is empty
+        if(root == null) return isBalance; 
+        checkBalance(root);
+        return isBalance; 
     }
+    public int checkBalance(TreeNode root){
+        //base case or end imbalance found
+        if(root == null || !isBalance) return 0;
 
-    public int maxDepth(TreeNode root){
-
-        if(root == null){return 0;}
-
-        int l = maxDepth(root.left);
-        int r = maxDepth(root.right);
-
-        if(Math.abs( l - r) > 1){
-            result = false;
-        }
-
-        //adding 1 to depth because we're going to the parent node
-        return 1 + Math.max(l, r);
+        int left = checkBalance(root.left);
+        int right = checkBalance(root.right);
+        //Checking if subtrees are balanced AKA height difference !> 1
+        if (Math.abs(left - right) > 1) isBalance = false; 
+        return 1 + (Math.max(left, right));
     }
 }
