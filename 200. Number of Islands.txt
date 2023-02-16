@@ -1,32 +1,34 @@
 class Solution {
+    int islands = 0; 
     public int numIslands(char[][] grid) {
-        
-        int islands = 0;
-        
+        //traversing the graph
         for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[i].length;j++){
+            for(int j = 0; j < grid[i].length; j++){
+                //if we find an island
                 if(grid[i][j] == '1'){
                     islands++;
-                    BFS(grid, i, j);
+                    DFS(grid,i,j); 
                 }
             }
         }
-        
-        return islands; 
+
+        return islands;
     }
-    
-    
-    public void BFS(char[][] matrix, int i, int j){
-        //check bounds
-        if(i < 0 || i >= matrix.length || j < 0 || j >= matrix[i].length || matrix[i][j] == '0') return;
-        //change value of 1 that's been traversed to, to 0 so we don't check again. 
-        matrix[i][j] = '0'; 
-        
-        BFS(matrix, i - 1, j); //up
-        BFS(matrix, i + 1, j); //down
-        BFS(matrix, i, j - 1); //left
-        BFS(matrix, i, j + 1); //right
-        
+
+    public void DFS(char[][] grid,int i, int j){
+        //If out of bounds or value is 0;
+        if(i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == '0'){
+            return; 
+        }
+        //Turning current index value to 0 so that we don't traverse it again
+        grid[i][j] = '0'; 
+        //Checking up
+        DFS(grid, i-1, j);
+        //Checking down
+        DFS(grid, i + 1, j);
+        //Checking left
+        DFS(grid, i, j - 1);
+        //Checking right
+        DFS(grid, i, j + 1);
     }
 }
-
