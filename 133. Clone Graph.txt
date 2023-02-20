@@ -1,30 +1,21 @@
+//DFS Solution
+//Time complexity: O(V+E). V for vertex and E for edge. 
+//Space complexity: O(n)
 class Solution {
+    HashMap<Integer, Node> nodeMap = new HashMap<>(); 
     public Node cloneGraph(Node node) {
-        if(node == null){return node;}
-        Map<Node,Node> seenNodes = new HashMap<>(); 
-        Queue<Node> queue = new LinkedList<Node>(); 
-        
-        queue.add(node);
-        seenNodes.put(node, new Node(node.val));
-        
-        while(!queue.isEmpty()){
-            Node first = queue.remove(); 
-            Node firstClone = seenNodes.get(first); 
-            
-            for(Node current : first.neighbors){
-                Node currentClone;
-                
-                if(seenNodes.containsKey(current)){
-                    currentClone = seenNodes.get(current);
-                }else{
-                    currentClone = new Node(current.val);
-                    queue.add(current); 
-                    seenNodes.put(current, currentClone);
-            }
-                firstClone.neighbors.add(currentClone); 
-            
+        //Edge case
+        if(node == null) return null; 
+        //If cloned node already exists, return it
+        if(nodeMap.containsKey(node.val)) return nodeMap.get(node.val); 
+        //Creating clone
+        Node newNode = new Node(node.val, new ArrayList<Node>()); 
+        //Adding clone to hashmap
+        nodeMap.put(node.val, newNode);
+        //For every neighbor our current node has, recursively add it to the clone Node's neighbor list. 
+        for(Node neighbor : node.neighbors){
+            newNode.neighbors.add(cloneGraph(neighbor));
         }
-        }
-        return seenNodes.get(node); 
+        return newNode; 
     }
 }
