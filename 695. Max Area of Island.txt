@@ -1,0 +1,36 @@
+//Time complexity: O(m*n)
+//Space complexity: O(m*n)
+class Solution {
+    int maxArea = 0;
+    public int maxAreaOfIsland(int[][] grid) {
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                //checking if current island is the new maxArea
+                if (grid[i][j] == 1) {
+                    maxArea = Math.max(maxArea,DFS(grid,i,j));
+                }
+            }
+        }
+        return maxArea;
+    }
+
+    public int DFS(int[][] grid, int i, int j){
+        //Checking boundaries and if # = 0
+        if(i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == 0) return 0; 
+        //Setting current index to 0
+        grid[i][j] = 0; 
+        int currentArea = 1; 
+        //for every possible traversal we're incrementing our currentArea
+        //up
+        currentArea += DFS(grid,i-1, j);
+        //down
+        currentArea += DFS(grid,i+1, j);
+        //left
+        currentArea += DFS(grid,i,j-1);
+        //right
+        currentArea += DFS(grid,i,j+1);
+        //When we can no longer traverse through the island; 
+        return currentArea; 
+    }
+
+}
