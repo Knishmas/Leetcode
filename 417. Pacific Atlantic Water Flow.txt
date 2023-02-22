@@ -1,0 +1,57 @@
+class Solution {
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        //get row size
+        int rows = heights.length; 
+        int cols = heights[0].length; 
+        //create boolean pacific & atlantic matrix 
+        boolean[][] pacific = new boolean[rows][cols]; 
+        boolean[][] atlantic = new boolean[rows][cols]; 
+        //run dfs on every column within the first row and last row
+        for(int col = 0; col < cols; col++){
+            //pacific top row
+            dfs(0,col,heights[0][col], pacific, heights); 
+            //atlantic bottom row
+            dfs(rows - 1,col,heights[rows - 1][col], atlantic, heights); 
+        }
+        //run dfs on every row within the first column and last column 
+        for(int row = 0; row < rows; row++){
+            //pacific left column
+            dfs(row,0,heights[row][0], pacific, heights); 
+            //atlantic right column
+            dfs(row, cols -1 ,heights[row][cols - 1], atlantic, heights); 
+        }
+
+        //Create answer list
+        List<List<Integer>> answer = new ArrayList<>(); 
+
+        //Traverse every index within heights and check if it can reach pacific and atlantic
+            //if true add it to the list
+            for(int i = 0; i < heights.length; i++){
+                for(int j = 0; j < heights[0].length; j++){
+                    if(pacific[i][j] && atlantic[i][j]){
+                        answer.add(Arrays.asList(i,j)); 
+                    }
+                }
+            }
+        //return answer list 
+        return answer; 
+
+    }
+
+    //DFS helper function
+    public void dfs(int row, int col, int prevHeight, boolean[][] visited, int[][] heights){
+        //check if out of bounds, visited, prevHeight > currentHeight: if so return; 
+        if(row < 0 || row >= heights.length || col < 0 || col >= heights[0].length || visited[row][col] || prevHeight > heights[row][col]) return; 
+
+        //mark as visited; 
+        visited[row][col] = true; 
+        //up
+        dfs(row -1, col, heights[row][col], visited, heights);
+        //down
+        dfs(row + 1, col, heights[row][col], visited, heights);
+        //left
+        dfs(row, col - 1, heights[row][col], visited, heights);
+        //right
+        dfs(row, col + 1, heights[row][col], visited, heights);
+    }
+}
