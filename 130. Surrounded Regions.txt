@@ -1,0 +1,51 @@
+//Time Complexity: O(n * m)
+//Space Complexity:
+class Solution {
+    public void solve(char[][] board) {
+        int rows = board.length; 
+        int cols = board[0].length; 
+
+    //handle border O's because they are not valid, nor are any 'O's connected to them 
+
+        //Scan top/bottom row and run DFS 
+        for(int col = 0; col < cols; col++){
+            dfs(0,col,board);
+            dfs(rows -1, col, board);
+        }
+        //Scan left/right row and run DFS
+        for(int row = 0; row < rows; row++){
+            dfs(row,0,board);
+            dfs(row,cols -1, board);
+        }
+        //Traverse through matrix, any "O" found will be turned into an X 
+        for(int i = 0; i < board.length; i++){
+            for (int j =0; j < board[0].length; j++){
+                if(board[i][j] == 'O'){
+                    board[i][j] = 'X'; 
+                }
+            } 
+        }
+        //Traverse matrix once more and any "T" cell will be reverted back into "O"
+        for(int i = 0; i < board.length; i++){
+            for (int j =0; j < board[0].length; j++){
+                if(board[i][j] == 'T'){
+                    board[i][j] = 'O'; 
+                }
+            } 
+        }
+    }
+    //DFS helper
+    //marking any "O" on the border as "T" - temporary 
+    public void dfs(int row, int col, char[][] board){
+        if(row < 0 || row > board.length -1 || col < 0 || col > board[0].length -1 || board[row][col] != 'O') return; 
+        board[row][col] = 'T';
+        //up
+        dfs(row - 1, col, board);
+        //down
+        dfs(row + 1, col, board);
+        //left
+        dfs(row, col -1, board);
+        //right
+        dfs(row, col + 1, board);
+    }
+}
