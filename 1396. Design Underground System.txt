@@ -1,0 +1,69 @@
+//Time complexity: checkIn, checkOut, getAverageTime: O(1)
+//Space complexity: O(N + M) N = # of Arivals. M = # of Averages 
+class UndergroundSystem {
+    //delimeter used to get a unique key for stations traversed 
+    final String delimeter = ","; 
+
+    HashMap<Integer, Event> arrivals; 
+    HashMap<String, Average> averages; 
+
+    public UndergroundSystem() {
+        arrivals = new HashMap<>(); 
+        averages = new HashMap<>(); 
+    }
+    
+    public void checkIn(int id, String stationName, int t) {
+        //add info to arrivals hashmap 
+        arrivals.put(id, new Event(id,stationName,t)); 
+    }
+    
+    public void checkOut(int id, String stationName, int t) {
+        Event arrivalEvent = arrivals.get(id); 
+        //removing customer from arrivals
+        arrivals.remove(id); 
+        //getting time it took between stations
+        int difference = t - arrivalEvent.time; 
+        //Getting key for the 2 stations traversed; 
+        String stationsKey = arrivalEvent.stationName + delimeter + stationName; 
+        //getting the average object if it already exists, otherwise creating a new one
+        Average average = averages.containsKey(stationsKey) ? averages.get(stationsKey) : new Average(); 
+        //updating the time 
+        average.update(difference); 
+        //putting stations key with its average object in the average map
+        averages.put(stationsKey, average); 
+    }
+    
+    public double getAverageTime(String startStation, String endStation) {
+       String currentStations = startStation + delimeter + endStation; 
+       return averages.get(currentStations).getAverage();
+    }
+
+    class Event{
+        int id; 
+        String stationName; 
+        int time; 
+
+        //constructor
+        public Event(int id, String stationName, int time){
+            this.id = id; 
+            this.stationName = stationName; 
+            this.time = time; 
+        }
+    }
+
+    class Average{
+        public double total = 0; 
+        public int count = 0; 
+        //updating total time and # of customers 
+        public void update(int difference){
+            count++; 
+            total+= difference;
+        }
+        //returning average
+        public double getAverage(){
+            return total / count; 
+        }
+    }
+        
+}
+
