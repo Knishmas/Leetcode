@@ -1,0 +1,24 @@
+//Run time complexity: O(n*logn)
+//Space complexity: O(n)
+class Solution {
+    public int twoCitySchedCost(int[][] costs) {
+        int n = costs.length / 2; 
+        int min_cost = 0; 
+        int[] refund = new int[2 * n];
+        int index = 0;
+        
+        for(int[] cost : costs){
+            //get the cost of everyone going to city A and totaling it
+            min_cost += cost[0];
+            //calculating difference of going to city B instead of city A 
+            refund[index++] = cost[1] - cost[0];
+        }
+        //soprting refund values so that the values that would give the most "refund" are first
+        Arrays.sort(refund); 
+        //adding the fist n values of those that would give the most refund with out min_cost(subtracting)
+        for(int i = 0; i < n; i++){
+            min_cost += refund[i];
+        }
+        return min_cost;
+    }
+}
