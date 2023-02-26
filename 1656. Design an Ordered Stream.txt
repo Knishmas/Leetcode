@@ -1,0 +1,19 @@
+class OrderedStream {
+    int pointer;
+    String[] values;
+    public OrderedStream(int n) {
+         pointer = 0; 
+        values = new String[n];
+    }
+    
+    public List<String> insert(int idKey, String value) {
+        List<String> answer = new ArrayList<>();
+        values[idKey - 1] = value;
+        while(pointer < values.length && values[pointer] != null){
+            answer.add(values[pointer]);
+            pointer++; 
+        }
+        return answer; 
+    }
+}
+

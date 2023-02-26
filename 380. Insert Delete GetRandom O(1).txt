@@ -6,43 +6,37 @@ class RandomizedSet {
         //Utilizes more space but keeps our O(1) requirement while fulfulling the getRandom function
 
     //Declare hashmap & arraylist
-    private HashMap<Integer,Integer> integerMap; 
+    private HashSet<Integer> integerMap; 
     private List<Integer> integerList;  
     public RandomizedSet() {
         //initialize hashmap and arraylist
-        integerMap = new HashMap<>(); 
+        integerMap = new HashSet<>(); 
         integerList = new ArrayList<>(); 
     }
     
     public boolean insert(int val) {
         //check hashmap if it contains val
             //if contains return false;
-        if(integerMap.containsKey(val)){
+        if(integerMap.contains(val)){
             return false;
         } else{
-            integerMap.put(val, integerList.size()); 
+            integerMap.add(val); 
             integerList.add(val);
             return true; 
         }
     }
     
-     public boolean remove(int val) {
-        if(!integerMap.containsKey(val)) {
+    public boolean remove(int val) {
+        //check hashmap if it contains val
+        //if contains val then return true and remove val from hashmap AND arraylist
+        //otherwise return false 
+        if(integerMap.contains(val)){
+            integerMap.remove(val);
+            integerList.remove(integerList.indexOf(val));
+            return true;
+        } else{
             return false;
-        }
-
-        int lastIndex = integerList.size() - 1;
-        int lastElement = integerList.get(lastIndex);
-        int indexElement = integerMap.get(val);
-        // Swap with last element
-        integerList.set(indexElement, lastElement);
-
-        // Update indices [Add & Delete]
-        integerMap.put(lastElement, indexElement);
-        integerMap.remove(val);
-        // Remove from list
-        integerList.remove(lastIndex);
-        return true;
+        }    
     }
     
     public int getRandom() {
@@ -55,3 +49,4 @@ class RandomizedSet {
     }
 }
 
+\
