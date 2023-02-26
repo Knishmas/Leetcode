@@ -1,0 +1,57 @@
+//Time complexity: O(1)
+//Space complexity: O(n)
+class RandomizedSet {
+    //Use primarily a hashmap beacause it has O(1) insertion and removal
+        //use a arraylist just to get the random element. 
+        //Utilizes more space but keeps our O(1) requirement while fulfulling the getRandom function
+
+    //Declare hashmap & arraylist
+    private HashMap<Integer,Integer> integerMap; 
+    private List<Integer> integerList;  
+    public RandomizedSet() {
+        //initialize hashmap and arraylist
+        integerMap = new HashMap<>(); 
+        integerList = new ArrayList<>(); 
+    }
+    
+    public boolean insert(int val) {
+        //check hashmap if it contains val
+            //if contains return false;
+        if(integerMap.containsKey(val)){
+            return false;
+        } else{
+            integerMap.put(val, integerList.size()); 
+            integerList.add(val);
+            return true; 
+        }
+    }
+    
+     public boolean remove(int val) {
+        if(!integerMap.containsKey(val)) {
+            return false;
+        }
+
+        int lastIndex = integerList.size() - 1;
+        int lastElement = integerList.get(lastIndex);
+        int indexElement = integerMap.get(val);
+        // Swap with last element
+        integerList.set(indexElement, lastElement);
+
+        // Update indices [Add & Delete]
+        integerMap.put(lastElement, indexElement);
+        integerMap.remove(val);
+        // Remove from list
+        integerList.remove(lastIndex);
+        return true;
+    }
+    
+    public int getRandom() {
+        //get size of arraylist 
+        int listSize = integerList.size(); 
+        //get random index first in order to pass it to get random value from list
+        int randomIndex = (int) (Math.random() * listSize);
+        int random = integerList.get(randomIndex);      
+        return random; 
+    }
+}
+
