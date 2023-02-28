@@ -1,0 +1,51 @@
+class Solution {
+    //Create a class for transaction so it's easier to access all the data and map it
+    class Transaction{
+        String name; 
+        int time; 
+        int amount;
+        String city; 
+
+        public Transaction(String input){
+            String[] parsedInput = input.split(",");
+            name = parsedInput[0];
+            time = Integer.parseInt(parsedInput[1]);
+            amount = Integer.parseInt(parsedInput[2]);
+            city = parsedInput[3];
+        }
+    }
+
+    public List<String> invalidTransactions(String[] transactions) {
+        //Map names of people with their transaction object   
+        HashMap<String,List<Transaction>> map = new HashMap<>();
+        List<String> invalid = new ArrayList<>();
+        //populating map with persons name along with all their transactions in a list
+        for(String transaction : transactions){
+            Transaction currentAdd = new Transaction(transaction); 
+            map.putIfAbsent(currentAdd.name, new ArrayList<Transaction>());
+            map.get(currentAdd.name).add(currentAdd); 
+        }
+        //Checking list again to see if any transactions are invalid and adding it to the invalid list
+        for(String transaction : transactions){
+            Transaction currentT = new Transaction(transaction); 
+            if(!isValid(currentT, map.getOrDefault(currentT.name, new ArrayList<Transaction>()))){
+                invalid.add(transaction); 
+            }
+        } 
+        return invalid; 
+    }
+
+    public Boolean isValid(Transaction t, List<Transaction> transactions){
+        //Condition if transaction is > 1000
+        if(t.amount > 1000) return false; 
+
+        //for every name to a transaction we will check it's list of transaction objects to see if they're invalid 
+        for(Transaction tr : transactions){
+            //Transaction is within 60 minutes and in different city
+            if(Math.abs(t.time - tr.time) <= 60 && !t.city.equals(tr.city)) return false; 
+        }    
+
+        return true;
+    }
+
+}
