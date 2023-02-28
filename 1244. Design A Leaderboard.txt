@@ -1,0 +1,31 @@
+public class Leaderboard {
+    private HashMap<Integer, Integer> board_map = new HashMap<>();
+
+    public void addScore(int playerId, int score) {
+        if(!board_map.containsKey(playerId)){
+            board_map.put(playerId,score);
+        }
+        board_map.put(playerId, board_map.get(playerId) + score);
+
+        //if K isn't ec
+    }
+    public int top(int K) {
+        int score_sum = 0;
+        //Max heap of size K
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+        for(int score : board_map.values()){
+            if(minHeap.size() > K ) minHeap.poll();
+            minHeap.offer(score);
+        }
+        while(!minHeap.isEmpty() ){
+            score_sum += minHeap.poll();
+        }
+        return score_sum;
+    }
+
+    public void reset(int playerId) {
+        board_map.remove(playerId);
+    }
+
+}

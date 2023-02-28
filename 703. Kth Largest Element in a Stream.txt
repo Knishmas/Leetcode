@@ -1,0 +1,24 @@
+//Time complexity: O(nlogn)
+//Space complexity: O(k)
+class KthLargest {
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>(); 
+    final int k;
+    public KthLargest(int k, int[] nums) {
+        this.k = k;
+        for(int num : nums) add(num); 
+    }
+    
+    public int add(int val) {
+        //Add items to the heap as long as it's less than k
+        if(minHeap.size() < k){
+            minHeap.add(val);
+        //only remove from the heap and add when the size is > k AND the value being inserted is greater than our min in heap
+        //Note: Any value that's less than the min item in our heap isn't needed. 
+        } else if(val > minHeap.peek()){
+            minHeap.poll();
+            minHeap.add(val); 
+        }
+        return minHeap.peek();
+    }
+}
+
