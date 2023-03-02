@@ -1,0 +1,40 @@
+//Time complexity: O(n)
+//Space complexity: O(d), d = max depth of input
+//5 possible cases
+//1 - The node is null, return it
+//2 - No child & no next, node return head
+//3 - No child and next node exist, DFS next node
+//4 - Child node exists and next node exists
+//5 - child node exists and there's no next node - flatten it and assign point
+class Solution {
+    public Node flatten(Node head) {
+        DFS(head);
+        return head; 
+    }
+
+    public Node DFS(Node head){
+        //1 - The node is null, return it
+        if(head == null) return head; 
+        //2 - No child & no next, node return head
+        if(head.child == null){
+            if(head.next == null) return head; 
+            //3 - No child and next node exist, DFS next node
+            return DFS(head.next);
+        }else{
+            Node child = head.child;
+            head.child = null;
+            Node next = head.next; 
+            Node tail = DFS(child);
+            head.next = child; 
+            child.prev = head;
+           // 5. child, next - flatten the child, connect it with the next, go next
+            if(next != null){
+                tail.next = next; 
+                next.prev = tail; 
+                return DFS(next);
+            }
+            // 4. child, no next - flatten the child and done
+            return tail;
+        }
+    }
+}
