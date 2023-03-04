@@ -1,0 +1,59 @@
+/**
+ * Definition of Interval:
+ * public class Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this.start = start;
+ *         this.end = end;
+ *     }
+ * }
+ */
+ 
+  //Asking what's the max amount of overlapping meetings 
+ //Example 
+ // 0---------------------------30
+ //      5--------15
+ //               15-----20
+
+ //Start[0,5,15]
+ //  end[15,20,30]
+
+public class Solution {
+    /**
+     * @param intervals: an array of meeting time intervals
+     * @return: the minimum number of conference rooms required
+     */
+    public int minMeetingRooms(List<Interval> intervals) {
+        int minRooms = 0; 
+        int currentRooms = 0;
+        int[] startTimes = new int[intervals.size()];
+        int[] endTimes = new int[intervals.size()];
+        //place all start time and end times in an array  
+        for(int i = 0; i < intervals.size; i++){
+            startTimes[i] = intervals.get(i).start; 
+            endTimes[i] = intervals.get(i).start; 
+        }
+        //sort arrays by starting time: ascending
+        Arrays.sort(startTimes);
+        Arrays.sort(endTimes);
+        //Have 2 pointers: 1 for start times & 1 for end times 
+        int startPointer = 0;
+        int endPointer = 0; 
+        while(startPointer != startTimes.length){
+            if(startTimes[startPointer] > endTimes[endPointer]){
+                currentRooms++;
+                startPointer++; 
+            } else{
+                currentRooms--; 
+                endPointer++; 
+            }
+            minRooms = Math.max(currentRooms,minRooms); 
+        }
+        //while the start pointer isn't at the end
+            //if start pointer is > than the end pointer 
+                //then increment a counter & start pointer.
+                //Set max comparison between counter and max
+            //else decrement counter and increase end pointer
+        return minRooms; 
+    }
+}
