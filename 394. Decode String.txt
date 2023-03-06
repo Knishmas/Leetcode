@@ -1,43 +1,47 @@
+//Solution: We'll have 4 cases when analyzing the string
+//1. an integer: we push it onto an a stack tracking the # of repeats
+//2. "[" indicates the start of a new string: push previous string and set it to empty 
+//3. Character: We add this to our current string
+//4. "]" the end of our string: pop our string and the repeat # in order to create a string with strinbuilder 
+
 class Solution {
     public String decodeString(String s) {
-        Stack<Integer> repeats = new Stack<>(); 
-        Stack<String> strings = new Stack<>();
-        int index = 0; 
-        String result = "";
+        if(s.length() == 1 && !Character.isDigit(s.charAt(0))) return s;
         
-        //4 possible cases. 
+        Stack<Integer> repeatCounter = new Stack<>(); 
+        Stack<String> strings = new Stack<>(); 
+        
+        String decoded = "";
+        if(s.length() == 1 && Character.isDigit(s.charAt(0))) return decoded;
+        int index = 0; 
+
         while(index < s.length()){
-            //When we come across a digit
-            if(Character.isDigit(s.charAt(index))){
+
+            if(s.charAt(index) == '['){
+                strings.push(decoded);
+                decoded = "";
+                index++;
+            }else if (s.charAt(index) == ']'){
+                int repeats = repeatCounter.pop(); 
+                StringBuilder currentString = new StringBuilder(strings.pop()); 
+                //Appending repeats of current string
+                for(int i = 0; i < repeats; i++){
+                    currentString.append(decoded);
+                }
+                 decoded = currentString.toString();
+                index++;
+            }else if(Character.isDigit(s.charAt(index))){
                 int count = 0;
                 while(Character.isDigit(s.charAt(index))){
-                    //Is able to handle single digit numbers AND greater
                     count = 10 * count +(s.charAt(index) - '0');
                     index+=1; 
                 }
-                repeats.push(count);
-            } else if(s.charAt(index) == '[' ){
-                //Start of a new string
-                strings.push(result);
-                result = "";
-                index+=1;
-                //When we reach the end of a encoded string
-            } else if (s.charAt(index) == ']'){
-                int currentRepeats = repeats.pop(); 
-                StringBuilder currentString = new StringBuilder(strings.pop()); 
-                //Appending repeats of current string
-                for(int i = 0; i < currentRepeats; i++){
-                    currentString.append(result);
-                }
-                 result = currentString.toString();
-                index+=1;
-                //if we come across a char
+                repeatCounter.push(count);
             } else{
-                //building string
-                result += s.charAt(index); 
-                index+=1; 
+                 decoded += s.charAt(index);
+                 index++;
             }
         }
-        return result;
+        return decoded; 
     }
 }
