@@ -1,0 +1,30 @@
+//Time complexity: O(2^N * N), N = number of nodes in the graph
+//Space complexity: O(N * 2^N),  N = number of nodes in the graph
+class Solution {
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+					
+        path.add(0);
+        dfsSearch(graph, 0, res, path);
+					
+        return res;
+    }
+
+    private void dfsSearch(int[][] graph, int node, List<List<Integer>> res, List<Integer> path) {
+        //Base case: When we've reached the final node
+        if (node == graph.length - 1) {
+            //creating a new array list copying path values because if we just add path then any modifications made to the path in the future will also modify the path stored in the result list
+            res.add(new ArrayList<Integer>(path));
+            return;
+        }
+        //Searching and taking every possible path 
+        for (int nextNode : graph[node]) {
+            path.add(nextNode);
+            dfsSearch(graph, nextNode, res, path);
+            //Backtracking and deleting nodes to the already visited path
+            path.remove(path.size() - 1);
+        }
+    }
+}
+	
