@@ -1,17 +1,25 @@
-﻿class Solution {
+﻿//Time complexity: O(n * m), m being the amount of words in wordDict
+//Space complexity: O(n)
+//dynamic programming bottom up approach will have base case of " " being true; 
+class Solution {
     public boolean wordBreak(String s, List<String> wordDict) {
-        int n = s.length(); 
-        boolean[] dp = new boolean[n + 1];
-        dp[0] = true; 
+    
+        boolean[] dp = new boolean[s.length() + 1]; 
+        dp[s.length()] = true; 
 
-
-        for(int i = 0; i <= n; i++ ){
-            for(int j = 0; j < i; j++){
-                if(dp[j] && wordDict.contains(s.substring(j,i))){
-                    dp[i] = true;
+        //starting from the end of s, decrement and check if you're able to append any word from word dict
+        for(int i = s.length(); i >= 0; i--){
+            for(String word : wordDict){
+                //Checking bounds and if the substring is matching with our current word in word dict
+                if(i + word.length() <= s.length() && s.substring(i,i + word.length()).startsWith(word)){
+                    //If the current word can be appended then check if the suffix can be 
+                    dp[i] = dp[i + word.length()];
                 }
+                //If the prefix is able to be formed with a word from word Dict then break the loop. We only need 1. 
+                if(dp[i]) break; 
             }
         }
-    return dp[n];
+         // Return whether the entire string s can be formed by wordDict
+        return dp[0];      
     }
 }
