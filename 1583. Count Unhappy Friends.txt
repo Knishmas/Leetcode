@@ -1,0 +1,51 @@
+class Solution {
+    public int unhappyFriends(int n, int[][] preferences, int[][] pairs) {
+        //Note: 
+        //Normal pair: [x,y] possible other pair[u,y]
+        //unhappy if: x prefers u over y, and u prefers x over v.
+            
+        int unhappys = 0;
+
+        //Array that hold the matches {index = person, value = their match}
+        int[] matches = new int[n];
+        //HashMap for every person that holds<preference, preferenceIndex>
+        HashMap<Integer,Integer>[] preferenceMap = new HashMap[n]; 
+
+        //Populate matches 
+        for(int[] pair : pairs){
+            int x = pair[0]; 
+            int y = pair[1];
+            matches[x] = y;
+            matches[y] = x;
+        }
+        //Create hashmaps for preferences 
+        for(int j = 0; j < n; j++){
+            preferenceMap[j] = new HashMap<>(); 
+        }
+
+        //Populate preference maps with friend and their preferenceValue
+
+        for(int k = 0; k < n; k++){
+            for(int l = 0; l < n - 1; l++){
+                preferenceMap[k].put(preferences[k][l], l);
+            }
+        }
+
+        //check for every preference if there's an unhappy  friend
+        for(int x = 0; x < n; x++){
+            for(int u : preferences[x]){
+                int y = matches[x]; //getting x's match: y
+                int v = matches[u]; //getting v's match: u
+                //Checking if it satisfied the conditions for an unhappy friend. 
+                if(preferenceMap[x].get(u) < preferenceMap[x].get(y) && preferenceMap[u].get(x) < preferenceMap[u].get(v)){
+                    unhappys++; 
+                    // move on to the next person
+                    break; 
+                }
+            }
+        }
+        
+            
+        return unhappys; 
+    }
+}
