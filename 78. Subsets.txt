@@ -1,0 +1,16 @@
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> allSubsets = new ArrayList<>(); 
+        findSubsets(nums, allSubsets, new ArrayList<>(),0); 
+        return allSubsets;
+    }
+
+    public void findSubsets(int[] nums, List<List<Integer>> allSubsets, List<Integer> currSubset, int index){
+        allSubsets.add(new ArrayList<>(currSubset));
+        for(int i = index; i < nums.length; i++){
+            currSubset.add(nums[i]);
+            findSubsets(nums, allSubsets, currSubset, i + 1); 
+            currSubset.remove(currSubset.size() - 1);
+        }
+    }
+}
