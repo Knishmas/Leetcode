@@ -1,0 +1,24 @@
+/*
+Runtime complexity: n * 2^n
+Spacial complexity: n * 2^n
+*/
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        //Sorting in order to check if next element is the same
+        Arrays.sort(nums);
+        List<List<Integer>> subsets = new ArrayList<>(); 
+        backtrack(nums, subsets,new ArrayList<>(), 0); 
+        return subsets; 
+    }
+
+    public void backtrack(int[] nums,  List<List<Integer>>subsets, List<Integer> currList, int index){
+        subsets.add(new ArrayList<>(currList)); 
+        for(int i = index; i < nums.length; i++){
+            //if the next elements is the same, then we skip it
+            if(i > index && nums[i] == nums[i - 1]) continue; 
+            currList.add(nums[i]);
+            backtrack(nums, subsets, currList, i + 1); 
+            currList.remove(currList.size() - 1);
+        }
+    }
+}
