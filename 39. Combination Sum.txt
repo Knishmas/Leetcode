@@ -1,27 +1,21 @@
 class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-
-        if(candidates == null) return null; 
-         List<List<Integer>> possibleCombinations = new ArrayList<>(); 
-        
-        getCombinations(candidates, 0,target,new ArrayList<>(), possibleCombinations);
-        return possibleCombinations; 
+         List<List<Integer>> combinations = new ArrayList<>(); 
+         backtrack(candidates, target, combinations, new ArrayList<>(), 0); 
+         return combinations; 
     }
-    
-    
-    public void getCombinations(int[] candidates, int index, int target, List<Integer> currentCombination, List<List<Integer>> result){
-        if(target == 0)result.add(new ArrayList<>(currentCombination));
-        
-        for(int i = index; i < candidates.length; i++){
-            if(candidates[i] <= target){
-                currentCombination.add(candidates[i]);
-                getCombinations(candidates,i,target - candidates[i], currentCombination, result);
-                currentCombination.remove(new Integer(candidates[i]));
+
+    public void backtrack(int[] candidates, int target, List<List<Integer>> combinations, List<Integer> currCombination, int index){
+        if(target == 0)combinations.add(new ArrayList<>(currCombination)); 
+        else if(target < 0) return;
+        else{
+            for(int i = index; i < candidates.length; i++){
+                if(candidates[i] <= target){
+                    currCombination.add(candidates[i]); 
+                    backtrack(candidates, target - candidates[i], combinations, currCombination, i); 
+                    currCombination.remove(currCombination.size() - 1);
+                }
             }
         }
-        
-        
-        
     }
-    
 }
