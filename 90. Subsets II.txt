@@ -1,7 +1,3 @@
-/*
-Runtime complexity: n * 2^n
-Spacial complexity: n * 2^n
-*/
 class Solution {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         //Sorting in order to check if next element is the same
