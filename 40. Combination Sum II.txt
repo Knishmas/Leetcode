@@ -1,22 +1,22 @@
 class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> combinations = new ArrayList<>();
         Arrays.sort(candidates);
-        List<List<Integer>> combinations = new ArrayList<>(); 
-        backtrack(candidates, target, combinations ,new ArrayList<>(), 0);
-        return combinations; 
+        backtrack(candidates, target, combinations, new ArrayList<>(), 0);
+        return combinations;
     }
 
-    public void backtrack(int[] candidates, int target,  List<List<Integer>> combinations, List<Integer> currList, int index){
-    if(target == 0) combinations.add(new ArrayList<>(currList));
-    else if (target < 0) return;
-    else{
-    
-    for(int i = index; i < candidates.length; i++){
-             if (i > index && candidates[i] == candidates[i - 1]) continue;
-                currList.add(candidates[i]); 
-                backtrack(candidates, target - candidates[i], combinations, currList, i + 1);
-                currList.remove(currList.get(currList.size() - 1));
+    public void backtrack(int[] candidates, int target, List<List<Integer>> combinations, ArrayList<Integer> currComb, int index){
+        if(target == 0) combinations.add(new ArrayList<>(currComb));
+        else if(target < 0) return;
+        else{
+
+        for(int i = index; i <  candidates.length; i++){
+            if(i > index && candidates[i] == candidates[i - 1]) continue;
+                currComb.add(candidates[i]);
+                backtrack(candidates, target - candidates[i], combinations, currComb, i + 1 );
+                currComb.remove(currComb.size() - 1);
         }
-    }
+        }
     }
 }
