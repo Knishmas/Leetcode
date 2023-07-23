@@ -1,0 +1,45 @@
+class Solution {
+    //map based on problem description
+    private Map<Character, String> digitToChar = Map.of(
+        '2',
+        "abc",
+        '3',
+        "def",
+        '4',
+        "ghi",
+        '5',
+        "jkl",
+        '6',
+        "mno",
+        '7',
+        "pqrs",
+        '8',
+        "tuv",
+        '9',
+        "wxyz"
+    );
+
+    public List<String> letterCombinations(String digits) {
+        //edge case, if input is empty
+        if(digits.length() == 0) return new ArrayList<>(); 
+        List<String> combinations = new ArrayList<>(); 
+        String curr = ""; 
+        backtrack(digits, combinations, curr, 0);
+        return combinations;
+
+    }
+
+    public void backtrack(String digits, List<String> combinations, String curr, int index){
+        //base case, when we've found a combination
+        if(curr.length() == digits.length()) combinations.add(curr);
+        else{
+            //getting available character options based on curr number
+            String availableChars = digitToChar.get(digits.charAt(index));
+            //finding combinations
+            for(char character : availableChars.toCharArray()){
+                backtrack(digits, combinations, curr + character, index + 1);
+            }
+        }
+    }
+
+}
