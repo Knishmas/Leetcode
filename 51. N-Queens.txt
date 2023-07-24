@@ -1,0 +1,47 @@
+//Queens may attack each other ONLY if they're in the same row, column, or diagonal
+//Note: size n = 2 && n = 3 are impossible to get a valid combination.
+
+class Solution {
+    //Sets to keep track and check if a queen is valid. 
+    private Set<Integer> col = new HashSet<Integer>(); 
+    private Set<Integer> posDiag = new HashSet<Integer>(); 
+    private Set<Integer> negDiag = new HashSet<Integer>(); 
+
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> answer = new ArrayList<>(); 
+        backtrack(n,answer, new ArrayList<String>(), 0);
+        return answer; 
+        }
+    
+    public void backtrack(int n, List<List<String>> answer,List<String> curr, int row ){
+        //base case
+        if(row == n)answer.add(new ArrayList<>(curr)); 
+
+        for(int i = 0; i < n; i++){
+            //checking if a queen already exists on col or either diagnols. If so, invalid, skip.
+            if(col.contains(i) || negDiag.contains(row - i) || posDiag.contains(row + i)) continue; 
+
+            //Fill char array with '.'s and start adding queens checking all possible combinations
+            char[] charArray = new char[n]; 
+            Arrays.fill(charArray, '.'); 
+            charArray[i] = 'Q'; 
+            String rowString = new String(charArray); 
+
+            curr.add(rowString); 
+            //add positions to set
+            col.add(i);
+            posDiag.add(row + i);
+            negDiag.add(row - i); 
+
+            backtrack(n, answer, curr, row + 1); 
+            //backtrack
+            curr.remove(curr.size() - 1); 
+            col.remove(i); 
+            posDiag.remove(row + i);
+            negDiag.remove(row - i);
+        }
+
+    }
+
+    
+}
