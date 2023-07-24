@@ -1,0 +1,15 @@
+//Top down DP solution
+class Solution {
+    private int cache[] = new int[31]; 
+
+    public int fib(int n) {
+        if(n == 0 || n == 1) return n;
+        //if it's in the cache already, return it
+        else if (cache[n] != 0){
+            return cache[n];
+        } else{
+        // if we haven't cached the number before 
+        return cache[n] = fib(n - 1) + fib(n - 2);
+        }
+    }
+}
