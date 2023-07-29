@@ -1,15 +1,98 @@
-//bottom up DP solution
-class Solution {
-    private int minCost = Integer.MAX_VALUE; 
+746. Min Cost Climbing Stairs
+4 solutions worst to best.
+
+1. Recursive
+2. Top down DP (Recursion & memoization)
+3. Bottom up DP (Tabulation)
+4. Bottom up O(1) space (no tabulation)
+
+Recurrence Relation: minCost(n) = cost(n) + Math.min(minCost(i - 1), minCost(i - 2)); 
+
+//-----------------------------------------------------------------
+// 1. Recursive solution
+//Complexity : Time: O(2^n) ; Space: O(n)
+ 
     public int minCostClimbingStairs(int[] cost) {
         int n = cost.length; 
-        int cache[] = new int[n];
-
-        cache[0] = cost[0];
-        cache[1] = cost[1]; 
-        for(int i = 2; i < n; i++){
-            cache[i] = cost[i] + Math.min(cache[i - 1], cache[i-2]);
-        }
-        return Math.min(cache[n-1],cache[n-2]);
+        //getting the culumative min cost of either the the last step of the step before
+        return Math.min(findMin(cost, n - 1),findMin(cost, n - 2) );
     }
-}
+
+    //helper func
+    public int findMin(int[] cost, int n){
+        //base case 
+        if(n < 0) return 0; 
+        if(n <= 1) return cost[n]; 
+        
+        return cost[n] + Math.min(findMin(cost, n - 1),findMin(cost, n - 2)); 
+    }
+    */
+
+//-----------------------------------------------------------------
+//2. Top down DP (Recursion & memoization)
+//Complexity : Time: O(n) ; Space: O(n)
+
+    public int minCostClimbingStairs(int[] cost) {
+        int n = cost.length; 
+        //cache
+        int dp[] = new int[n];
+        return Math.min(findMin(cost, n - 1, dp),findMin(cost, n - 2, dp) );
+    }
+
+    public int findMin(int[] cost, int n, int[] dp){
+        //base case 
+        if(n < 0) return 0; 
+        if(n <= 1) return cost[n]; 
+        //checking cache
+        if(dp[n] != 0) return dp[n];
+        //caching computations
+        dp[n] = cost[n] + Math.min(findMin(cost, n - 1, dp),findMin(cost, n - 2, dp)); 
+        return dp[n]; 
+    }
+
+//-----------------------------------------------------------------
+//3. Bottom up DP (Tabulation)
+//Complexity : Time: O(n) ; Space: O(n)
+
+    public int minCostClimbingStairs(int[] cost) {
+        int n = cost.length; 
+        //cache
+        int dp[] = new int[n];
+        //initial values to build up on
+        dp[0] = cost[0];
+        dp[1] = cost[1]; 
+
+        //building min values from bottom up
+        for(int i = 2; i < n; i++){
+            dp[i] = cost[i] + Math.min(dp[i - 1], dp[i - 2]); 
+        }
+
+        //returning culmative min of either last step or step before. 
+        return Math.min(dp[n - 1], dp[n-2]);
+    }
+
+//-----------------------------------------------------------------
+
+//Optimized solution: Bottom up O(1) space, no tabulation
+//Complexity : Time: O(n) ; Space: O(1)
+    public int minCostClimbingStairs(int[] cost) {
+        //edge case
+        if(cost.length == 2){
+            return Math.min(cost[0], cost[1]);
+        }
+
+        int n = cost.length; 
+        //only need these 3 vars to build up culmalative min sum. 
+        int prev1 = cost[0];
+        int prev2 = cost[1];
+        int finalMin = 0;
+
+        for(int i = 2; i < n; i++){
+            //updating values
+            finalMin = cost[i] + Math.min(prev1, prev2); 
+            prev1 = prev2; 
+            prev2 = finalMin;
+        }
+
+        return Math.min(prev1, finalMin);
+    }
