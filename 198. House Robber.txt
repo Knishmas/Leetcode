@@ -1,18 +1,89 @@
-//bottom top dp solution
-//run time & spacial complexity: O(n)
-class Solution {
-    public int rob(int[] nums) {
-        //edge case
-        if(nums.length == 0) return 0;
-        int dp[] = new int[nums.length + 1]; 
-        dp[0] = 0; 
-        dp[1] = nums[0]; 
+198. House Robber
 
-        for (int i = 1; i < nums.length; i++){
-            dp[i + 1] = Math.max(dp[i], dp[i-1] + nums[i]);
-        }
-        return dp[nums.length];
-        
-    }
+4 solutions worst to best.
+
+1. Recursive
+2. Top down DP (Recursion & memoization)
+3. Bottom up DP (Tabulation)
+4. Bottom up O(1) space (no tabulation)
+
+Recurrence Relation: Math.max(((n - 2) + (n)), (n-1))
+//-----------------------------------------------------------------
+// 1. Recursive solution
+
+public int rob(int[] nums) {
+    int n = nums.length - 1;
+    //edge case
+    if(n == 0) return nums[n];
+    return robMax(nums, n); 
+    
 }
 
+//helper func
+public int robMax(int[] nums, int n){
+    //base case
+    if(n < 0) return 0; 
+    //Get the cumulative max of the current house + max of n - 2 houses OR get max of n-1 houses
+    return Math.max(robMax(nums, n -  1), nums[n] + robMax(nums, n - 2));
+}
+
+//-----------------------------------------------------------------
+// 2. Top down DP approach 
+
+    public int rob(int[] nums) {
+        //edge case 
+        if (nums.length == 1) return nums[0]; 
+        int n = nums.length - 1;
+        int[] dp = new int[nums.length + 1]; 
+        return robMax(nums, n, dp); 
+        
+    }
+
+    //helper func
+    public int robMax(int[] nums, int n, int[] dp){
+        //base
+        if(n < 0) return 0; 
+        //checking cache
+        if(dp[n] != 0) return dp[n]; 
+        //caching
+        dp[n] = Math.max(robMax(nums, n -  1, dp), nums[n] + robMax(nums, n - 2, dp));
+        return dp[n];
+    }
+
+//-----------------------------------------------------------------=
+// 3.Bottom up DP approach
+
+public int rob(int[] nums) {
+    //edge case 
+    if (nums.length == 1) return nums[0]; 
+    int n = nums.length;
+    int[] dp = new int[n + 1]; 
+    dp[0] = 0;
+    dp[1] = nums[0];
+
+    for(int i = 2; i < dp.length; i++){
+        dp[i] = Math.max(dp[i - 1], nums[i - 1] + dp[i - 2]);
+    }
+    
+    return dp[n];
+
+}
+
+//-----------------------------------------------------------------=
+//Optimized solution: Bottom up O(1) space, no tabulation
+
+public int rob(int[] nums) {
+    //edge case 
+    if (nums.length == 1) return nums[0]; 
+
+    int prev1 = 0;
+    int prev2 = nums[0];
+    int maxRob = 0;
+
+    for(int i = 2; i < nums.length + 1; i++){
+        maxRob = Math.max(prev2, nums[i - 1] + prev1);
+        prev1 = prev2; 
+        prev2 = maxRob; 
+    }
+    
+    return prev2;
