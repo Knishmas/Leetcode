@@ -1,0 +1,51 @@
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        //isVisited array to keep track of courses already visited
+        int[] visited = new int[numCourses]; 
+        //create an neighbors list, aka adjacency list 
+        List<List<Integer>> prereqs = new ArrayList<>(); 
+
+        //Adding arraylist for every course in pre-reqs
+        for(int i = 0; i < numCourses; i++){
+            prereqs.add(new ArrayList<>()); 
+        }
+
+        //Populate adjacenecy list for every possible class 
+        for(int j = 0; j < prerequisites.length; j++){
+            prereqs.get(prerequisites[j][0]).add(prerequisites[j][1]);
+        }
+
+        //For every course check if isCycle is true: return false
+        //we do this because it's possible our graph isn't completely connected
+         for (int i = 0; i < numCourses; i++) {
+             if(isCycle(prereqs,visited, i)) return false; 
+         }
+
+        //otherwise return true, no cycle 
+        return true; 
+    }
+
+    //DFS helper functions
+    public boolean isCycle(List<List<Integer>> prereqs, int[] visited, int current){
+    //base case, if we've already visited a node in progress before DFS has completed.
+     if(visited[current] == 2) return true; 
+
+     visited[current] = 2; 
+     //for every pre-req, a class has loop through and DFS
+     for(int i = 0; i < prereqs.get(current).size(); i++){
+        int currPrereq = prereqs.get(current).get(i);
+        //skipping already visited paths
+        if(visited[currPrereq] != 1){
+            if(isCycle(prereqs,visited, currPrereq)) return true;
+        }
+     }
+     
+    //when done traversing mark node as done and visited
+    visited[current] = 1; 
+        
+     return false; 
+    }
+   
+
+}
