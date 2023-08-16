@@ -1,0 +1,31 @@
+class Solution {
+    private int parameter = 0; 
+    public int islandPerimeter(int[][] grid) {
+        //traverse every index and dfs if we find land
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[i].length; j++){
+                if(grid[i][j] == 1) searchParameter(grid, i, j); 
+            }
+        }
+        return parameter; 
+    }
+
+    public void searchParameter(int[][] grid, int i, int j){
+        //if out of bounds or we detect water we increment parameter
+        if(i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] == 0){
+            parameter++; 
+            return; 
+        }
+        if(grid[i][j] == -1) return; 
+
+        //marking as -1 so we don't re-visit
+        grid[i][j] = -1;
+        //DFS 
+        searchParameter(grid, i - 1, j); //up 
+        searchParameter(grid, i + 1, j); //down 
+        searchParameter(grid, i, j - 1); //left 
+        searchParameter(grid, i, j + 1); //right 
+    }
+
+
+}
