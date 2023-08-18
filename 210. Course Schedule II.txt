@@ -1,0 +1,63 @@
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        //adjaceny list for neighbors 
+        List<List<Integer>> adj = new ArrayList<>(); 
+        //Topological order list 
+        List<Integer> toplist = new ArrayList<>(); 
+        //visited array. (1 for visited, 2 for in progress)
+        int[] visited = new int[numCourses]; 
+        
+        
+        //Create list within adjacency list for every course
+        for(int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
+
+        //Populate adjacency list with each courses respective pre-requisites(neighbors)
+        for(int j = 0; j < prerequisites.length; j++) adj.get(prerequisites[j][0]).add(prerequisites[j][1]);
+        
+        //For every course perform DFS(checking for cycle & adding to res list) 
+        //note: also we do this because it's possible that our graph is broken up. 
+        for(int k = 0; k < numCourses; k++){
+            if(visited[k] != 1){
+                //detecting a cycle therefore returning empty array
+                if(topsort(adj,visited,k, toplist)) return new int[0];
+            }
+        }
+
+        //Topological order array to hold final answer
+        int[] topOrder = new int[toplist.size()]; 
+        
+        //Copy list value over to arrray with for loop
+        for(int l = 0; l < toplist.size(); l++){
+            topOrder[l] = toplist.get(l);
+        }
+
+        return topOrder; 
+    }
+
+
+    public boolean topsort(  List<List<Integer>> adj, int[] visited, int curr,List<Integer> toplist){
+    //case if node is being processed (visisted = 2) then we return true; 
+        if(visited[curr] == 2) return true;
+
+    //mark curr node as 2 for being in process
+        visited[curr] = 2; 
+    //loop through currents neighbors 
+
+        for(int i = 0; i < adj.get(curr).size(); i++){
+            int neighbor = adj.get(curr).get(i);
+            //if neighbor is unvisited 
+            if(visited[neighbor] != 1){
+            //check if there's a cycle 
+                if(topsort(adj,visited,neighbor, toplist)) return true; 
+            }
+        
+        }
+       //mark current as visisted (1)
+        visited[curr] = 1;
+       //add number to result. 
+        toplist.add(curr); 
+
+        return false; 
+    }
+
+}
