@@ -1,0 +1,64 @@
+//union by rank
+//group the nodes, when we find a node whose already part of the gruop we know we have redundant node. duplicate
+class Solution {
+    int parent[]; 
+    int rank[];
+   
+    public int[] findRedundantConnection(int[][] edges) {
+        //adding 1 to account for the nodes being labeled 1 to n
+        parent = new int[edges.length + 1]; 
+        rank = new int[edges.length + 1]; 
+
+        //populate parent & rank array 
+        for(int i = 1; i < edges.length; i++){
+            parent[i] = i;
+            rank[i] = 1;
+        }
+
+        //Go through every edge
+        for(int[] edge : edges){
+            //if the parents match (they're already connected) return that edge. 
+            if( find(edge[0]) == find(edge[1]) ) return edge; 
+            //otherwise unionize
+            union(edge[0],edge[1]); 
+        }
+            //default value if input isn't valid.
+            return new int[2];
+    }
+
+
+    public int find(int x){
+        //if the node value is it's own parent return 
+        if(x == parent[x]) return x; 
+        //find the root and also compress the path during the recursive traversal
+        return find(parent[x]);
+    }
+
+
+    public void union(int x, int y){
+        //check that the nodes aren't the same 
+        int rootX = find(x);
+        int rootY = find(y);
+
+        //If theyr'e not of the same root
+        if(rootX != rootY){
+            //Checking which rank is greater than the other. Unionizing and updating rank
+            if(rank[rootX] > rank[rootY]){
+                parent[rootY] = rootX; 
+                rank[rootX]++;
+            }
+            else if(rank[rootX]  < rank[rootY]){
+                parent[rootX] = rootY;
+                rank[rootY]++;
+            }
+            //in the case they're both the same rank.
+            //It doesn't matter which becomes the parent/child, so long as we unionize and update rank
+            else{
+                parent[rootY] = rootX; 
+                rank[rootX]++;
+            }
+        }
+    }
+
+        
+}
