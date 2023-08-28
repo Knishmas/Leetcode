@@ -1,0 +1,34 @@
+class Solution {
+    public void wallsAndGates(int[][] rooms) {
+        Queue<int[]> queue = new LinkedList<>(); 
+
+        for(int i = 0; i < rooms.length; i++) {
+            for(int j = 0; j < rooms[i].length; j++) {
+                if(rooms[i][j] == 0) {
+                    queue.offer(new int[]{i, j}); 
+                }
+            }
+        }
+        // Edge case, if no gate. 
+        if(queue.isEmpty()) {
+            return; 
+        }
+
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}; 
+
+        while(!queue.isEmpty()) {
+            int[] currPoint = queue.poll(); 
+            for(int[] direction : directions) {
+                int x = currPoint[0] + direction[0];
+                int y = currPoint[1] + direction[1];
+
+                if(x < 0 || x >= rooms.length || y < 0 || y >= rooms[0].length || rooms[x][y] != Integer.MAX_VALUE) {
+                    continue; 
+                }
+
+                queue.offer(new int[]{x, y});
+                rooms[x][y] = rooms[currPoint[0]][currPoint[1]] + 1; 
+            }
+        }
+    }
+}

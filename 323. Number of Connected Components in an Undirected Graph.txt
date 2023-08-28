@@ -1,0 +1,54 @@
+
+    //Join all the nodes by the edges
+    // for every edge we're connecting we'll decrement components, unless they're already connected. 
+ class Solution {
+    int[] parent; 
+    int[] rank; 
+
+    public int countComponents(int n, int[][] edges) {
+        //We will initially have n components for the n nodes we will connect. 
+        int components = n; 
+        parent = new int[n];
+        rank = new int[n];
+
+        //populate parent and rank 
+        for(int i = 0; i < n; i++){
+            parent[i] = i; 
+            rank[i] = 1;
+        }
+
+        for(int[] edge : edges){
+            //If the edges are already connected, then we ignore it. 
+            if(find(edge[0]) == find(edge[1])) continue;
+            //Otherwise union the edges and decrement. 
+            union(edge[0], edge[1]); 
+            components--; 
+        }
+        return components; 
+    }
+
+    public int find(int x){
+        if(x == parent[x]) return x; 
+        return parent[x] = find(parent[x]);
+    }
+    
+    public void union(int x, int y){
+        int rootX = find(x); 
+        int rootY = find(y); 
+
+    //Checking to see if we're already in the same tree (Doesn't need to be unionized)
+        if(rootX != rootY){
+            if(rank[rootX] > rank[rootY]){
+                parent[rootY] = rootX; 
+                rank[rootX]++;
+            } else if(rank[rootX] < rank[rootY]){
+                parent[rootX] = rootY; 
+                rank[rootY]++;
+            } else{
+                //rank is equal it doesn't matter who joins who
+                parent[rootY] = rootX; 
+                rank[rootX]++;
+            }
+        }
+    }
+}
