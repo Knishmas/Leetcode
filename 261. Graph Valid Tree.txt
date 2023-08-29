@@ -1,0 +1,46 @@
+public class Solution {
+    int[] parent;
+    int[] rank;
+
+    public boolean validTree(int n, int[][] edges) {
+        int components = n;
+        parent = new int[n];
+        rank = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            rank[i] = 1;
+        }
+
+        for (int[] edge : edges) {
+            if (find(edge[0]) == find(edge[1])) return false;
+            union(edge[0], edge[1]);
+            components--;
+        }
+
+        return components == 1; 
+    }
+
+    public int find(int x) {
+        if (x == parent[x]) return x;
+        return parent[x] = find(parent[x]);
+    }
+
+    public void union(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
+
+        if (rootX != rootY) {
+            if (rank[rootX] > rank[rootY]) {
+                parent[rootY] = rootX; 
+                rank[rootX]++;
+            } else if (rank[rootX] < rank[rootY]) {
+                parent[rootX] = rootY; 
+                rank[rootY]++;
+            } else {
+                parent[rootY] = rootX;
+                rank[rootX]++;
+            }
+        }
+    }
+}
