@@ -1,0 +1,56 @@
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        //edge case: if wordList doesn't contain the end word word. 
+        if(!wordList.contains(endWord)) return 0; 
+        wordList.add(beginWord);
+        Map<String, List<String>> adj = new HashMap<>();
+        Set<String> visited = new HashSet<>();
+        int stringLength = beginWord.length(); 
+
+       //creating adjacency list
+        for(String word : wordList){
+            //Going through every possible wildcard(*) variation and finding appropriate neighbors 
+            //populating adj list
+            for(int i = 0; i < stringLength; i++){
+                StringBuilder currVariation = new StringBuilder(word); 
+                currVariation.setCharAt(i, '*'); 
+                List<String> currNeighbors = adj.getOrDefault(currVariation.toString(), new ArrayList<>()); 
+                currNeighbors.add(word); 
+                adj.put(currVariation.toString(), currNeighbors); 
+            }
+        }
+
+        //Breadth first search; 
+        Queue<String> queue = new LinkedList<>(); 
+        queue.offer(beginWord); 
+        visited.add(beginWord);
+        int distance = 1; 
+        StringBuilder stringVariation = null;
+
+        while(!queue.isEmpty()){
+            distance++;
+            int levelSize = queue.size();
+            //for every item within the level; 
+            for(int i = 0; i < levelSize; i++){
+                String currString = queue.poll(); 
+                //go through every word variation and queue neighbors
+                for(int j = 0; j < stringLength; j++){
+                    stringVariation = new StringBuilder(currString); 
+                    stringVariation.setCharAt(j, '*');
+                    for (String neighbor : adj.get(stringVariation.toString())) {
+                        //if already visited
+                        if(visited.contains(neighbor)) continue; 
+                        //First to find the end.
+                        if(neighbor.equals(endWord)) return distance; 
+                        queue.offer(neighbor);
+                        visited.add(neighbor); 
+                    }
+                }
+            }
+
+        }
+
+    return 0; 
+    }
+   
+}
