@@ -1,0 +1,44 @@
+//Notes: Classic Dijkstras
+//Each  array within time holds: [Source node, node to, traversal cost]
+class Solution {
+    public int networkDelayTime(int[][] times, int n, int k) {
+        HashSet<Integer> visited = new HashSet<>(); 
+        //adj list for nodes and their adjacents 
+        //{Node, neighbors [node to, cost], [], []...}
+        HashMap<Integer, List<int[]>> adj = new HashMap<>(); 
+        //Priority queue: sorting by time also to handle BFS 
+        //minheap holding int[cost, node]
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+        //initial source node.
+         minHeap.offer(new int[]{0,k});
+
+        //populate adj list 
+        for(int[] time : times){
+            int node = time[0];
+            adj.putIfAbsent(node, new ArrayList<>()); 
+            adj.get(node).add(new int[]{time[1],time[2]});
+        }
+        int delay = 0; 
+
+        //Processing nodes and getting the min cost node each time. 
+        while(!minHeap.isEmpty()){
+            int[] current = minHeap.poll(); 
+            int currNode = current[1];
+            if (visited.contains(currNode)) continue;
+            visited.add(currNode); 
+            
+            delay = current[0]; 
+            //For every neighbor we're adding the node and it's time to the heap
+            for(int[] neighbor : adj.getOrDefault(currNode, new ArrayList<>())){
+                //If we've already visted the neighbor node, skip it
+                if(visited.contains(neighbor[0])) continue; 
+                int nextNode = neighbor[0];
+                int nextTime = delay + neighbor[1]; 
+                minHeap.offer(new int[]{nextTime,nextNode});
+            }
+        }
+        //checking to see if we've traversed all the nodes. If so return min time otherwise -1;
+        return visited.size() == n ? delay : -1; 
+    }
+}                         
