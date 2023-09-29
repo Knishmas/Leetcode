@@ -1,0 +1,30 @@
+/*
+Time complexity: nlog(n)
+Spacial complexity: n 
+*/
+class Solution {
+    public int lastStoneWeight(int[] stones) {
+        //edge case: Where stones only has 1 item 
+        if(stones.length == 1) return stones[0];
+        //MaxHeap 
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b)-> b - a);
+
+        //initial population of maxHeap
+        for(int stone : stones){
+            maxHeap.offer(stone);
+        }
+
+        //begin crushing and analyzing
+        while(maxHeap.size() > 1){
+            int y = maxHeap.poll();
+            int x = maxHeap.poll(); 
+            //if they're equal we just remove them from the heap. otherwise replacing them. 
+            if(x != y){
+                int difference = y - x;
+                maxHeap.offer(difference); 
+            }
+        }
+        //return final heap answer dependent if there is something left or not
+        return maxHeap.isEmpty() ? 0 : maxHeap.poll();
+    }
+}
