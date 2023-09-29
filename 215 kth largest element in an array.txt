@@ -1,0 +1,16 @@
+//Time complexity: nlog(n)
+//Space Complexity: n
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        //Insert every item into maxheap 
+        for (int num : nums){
+            //With this if condition we will be left with a heap of the k largest elements; 
+             minHeap.offer(num); 
+            if(minHeap.size() > k) minHeap.poll();
+           
+        }
+        //since we have a minHeap the kth element within the heap will be at the top of the heap. 
+        return minHeap.poll(); 
+    }
+}
