@@ -1,0 +1,37 @@
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        //Edge case: if the process time = 0 then the min time will be the length of tasks
+        if(n == 0) return tasks.length; 
+        int time = 0;
+        //Max heap will keep track of our top occuring task
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
+        //Queue to handle our processes on cooldown
+        Queue<int[]> procQueue = new LinkedList<>(); 
+        //Alphabet array will be utilized to get the frequency of each task
+        int[] taskFreqs = new int[26];
+        //Getting the freq of every task
+        for(char task : tasks) taskFreqs[task - 'A']++; 
+        //populating the maxheap with our task freqs
+        for(int freq : taskFreqs){
+            if(freq > 0) maxHeap.offer(freq);
+        }
+        //process the maxHeap and procQueue until they're both empty
+        while(!maxHeap.isEmpty() || !procQueue.isEmpty()){
+            time++; 
+            if(!maxHeap.isEmpty()){
+                int currTaskVal = maxHeap.poll();
+                //Processed task: decremting it's frequency
+                currTaskVal--; 
+                //if the current task isn't 0, it will need to be furhter processed 
+                if(currTaskVal > 0) procQueue.offer(new int[]{currTaskVal, time + n}); 
+            }
+            //Checking to see if the latest task in queue is ready to be processed. No more cooldown. 
+            if(!procQueue.isEmpty() && procQueue.peek()[1] == time){
+                //offering the latest tasks value back into the heap. 
+                maxHeap.offer(procQueue.poll()[0]);
+            }
+        }
+
+        return time;
+    }
+}
