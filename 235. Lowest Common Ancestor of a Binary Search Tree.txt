@@ -1,25 +1,54 @@
-
+Straightforward simple BST based solution: 
 
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        
-        //If they're both on the left
-        
-        if(p.val < root.val && q.val < root.val){
-            return lowestCommonAncestor(root.left,p,q);
-        }
-        
-        //If they're both on the right
-        else if(p.val > root.val && q.val > root.val){
-           return lowestCommonAncestor(root.right,p,q);
-        }
-        
-        //recursively calling until we can find where both p & q are on different sides. 
-        // or until one of them is a child of another.
-        
-        //If they're on different sides then the root is the LCA
+        //If the LCA is one of the given nodes.
+        if(root.val == p.val || root.val == q.val) return root; 
+
+        //if both nodes are on on seperate subtrees of the root; 
+        if((p.val < root.val && q.val > root.val) || (q.val < root.val && p.val > root.val)) return root; 
+        //If the LCA is in the left subtree
+        if(p.val < root.val) return lowestCommonAncestor(root.left,p,q); 
         else{
-            return root;
+            //If the LCA is in the right subtree
+             return lowestCommonAncestor(root.right,p,q);
         }
+            
     }
 }
+---------------------------------------------------------------------------------------------------------------------------------
+
+Less efficient helper based solution utilizing is same tree and subtree functions 
+class Solution {
+   public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+       if(root == null) return null; 
+       // If the root is one of the two nodes, it's the lowest common ancestor.
+       if( root.val == p.val || root.val == q.val) return root; 
+       
+       //Find the LCA in the left and right subtrees.
+       TreeNode left = lowestCommonAncestor(root.left,p,q); 
+       TreeNode right = lowestCommonAncestor(root.right,p,q);
+    // If both subtrees are null, it means neither node is in the tree, so there's no LCA and it's the parent.
+       if(left != null && right != null) return root; 
+       else return left != null ? left : right;
+   }
+
+    public boolean isSubtree(TreeNode root, TreeNode subroot){
+        if(root == null) return false; 
+
+        if(isSameTree(root, subroot)) return true; 
+
+        return isSubtree(root.left,subroot) || isSubtree(root.right,subroot);
+
+    }
+
+    public boolean isSameTree(TreeNode q1,TreeNode q2){
+        if(q1 == null && q2 == null) return true; 
+        if(q1 == null || q2 == null) return true; 
+
+        if(q1.val != q2.val) return false; 
+
+        return isSameTree(q1.left,q2.left) && isSameTree(q1.right,q2.right); 
+    }
+}
+
