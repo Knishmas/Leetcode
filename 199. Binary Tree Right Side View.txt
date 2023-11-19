@@ -1,0 +1,24 @@
+class Solution {
+    //main idea: Level order traversal and only add the last item of the level order list. 
+    //This guarantees that the node is only the right side list 
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> rightSideList = new ArrayList<>(); 
+        //edge case 
+        if(root == null) return rightSideList; 
+        Queue<TreeNode> levelQueue = new LinkedList<>(); 
+        levelQueue.add(root); 
+        while(!levelQueue.isEmpty()){
+            int levelSize = levelQueue.size(); 
+            //For every level
+            for(int i = 0; i < levelSize; i++){
+                TreeNode current = levelQueue.poll(); 
+                //we're adding ONLY the last item AKA the right most node of each level
+                if(i == (levelSize - 1) ) rightSideList.add(current.val);
+                //if current has children then we add them to the queue 
+                if(current.left != null) levelQueue.add(current.left);
+                if(current.right != null) levelQueue.add(current.right);
+            }
+        }
+        return rightSideList; 
+    }
+}
