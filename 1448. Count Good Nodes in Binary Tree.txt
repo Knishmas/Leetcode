@@ -1,0 +1,21 @@
+class Solution {
+    int totalGood = 0; 
+    public int goodNodes(TreeNode root) {
+      findGood(root, root.val);
+      return totalGood;
+    }
+
+    public int findGood(TreeNode root, int currMax){
+        //base case 
+        if(root == null) return 0; 
+        //if we find a good node
+        if(root.val >= currMax){
+            totalGood++; 
+            currMax = root.val; 
+        }
+        //calculate the good nodes on each subtree and return the sum
+        int leftGood = findGood(root.left, currMax); 
+        int rightGood = findGood(root.right, currMax);
+        return leftGood + rightGood; 
+    }
+}
