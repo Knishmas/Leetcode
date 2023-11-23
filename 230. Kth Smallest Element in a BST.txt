@@ -1,0 +1,23 @@
+//Main idea: traverse every node within the tree and insert the values into a min heap. 
+//When that's done, remove k nodes until we've reached the k smallest and return the val  
+class Solution {
+    PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>(); 
+
+    public int kthSmallest(TreeNode root, int k) {
+        populateHeap(root); 
+        //Removing items from the heap until we get the kth smallest val
+        while(k != 1){
+            minHeap.poll(); 
+            k--; 
+        }    
+        return minHeap.poll(); 
+    }
+
+    //Traverse the tree and insert vals into the tree
+    public void populateHeap(TreeNode root){
+        if(root == null) return; 
+        minHeap.offer(root.val);
+        populateHeap(root.left);
+        populateHeap(root.right); 
+    }
+}
