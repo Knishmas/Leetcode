@@ -1,26 +1,14 @@
 
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        Stack<TreeNode> stack = new Stack();
-        
-        //Basically creating a incredibly low negative number for our first comparison with left val
-        double left_val = - Double.MAX_VALUE; 
-        
-        
-        while(!stack.isEmpty() || root != null){
-            //Traversing left side of the tree to the end 
-            while(root != null){
-                stack.push(root);
-                root = root.left;
-            }
-            
-            root = stack.pop();
-            if(root.val <= left_val) return false;
-            left_val = root.val; 
-            
-            root = root.right;
-            
-        }
-        return true; 
+        return validateTree(root, Long.MIN_VALUE, Long.MAX_VALUE); 
+    }
+    public boolean validateTree(TreeNode root, long min, long max){
+        //base case, we've reached a leaf node without invalidating the tree
+        if(root == null) return true; 
+        //validating that the current node doesn't violate BST boundary rules
+        if(root.val >= max || root.val <= min) return false; 
+        //check that both left and right subtrees also follow the rules of a BST, if so: it's a BST
+        return validateTree(root.left,min,root.val) && validateTree(root.right,root.val,max); 
     }
 }
