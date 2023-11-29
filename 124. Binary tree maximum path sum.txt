@@ -1,0 +1,30 @@
+/*
+Main Idea: DFS traversal bottom up approach. 
+Find the max val of :root + left, root + right, or root + left + right vals
+
+Note: It's possible our max value is a single node so we continuously update our max val. 
+
+We also want to ignore negative values because they won't add to our max val.
+*/
+class Solution {
+    //The node values could be negative so we set maximumPathSum to the absolute minimum to handle this. 
+    int maximumPathSum = Integer.MIN_VALUE; 
+    public int maxPathSum(TreeNode root) {
+        findMaxPathSum(root); 
+        return maximumPathSum; 
+    }
+
+    public int findMaxPathSum(TreeNode root){
+        //base case
+        if(root == null) return 0; 
+
+        //Including Math.max(0,...) beacuse we want to ignore if the left or right path is negative. 
+        int left = Math.max(0,findMaxPathSum(root.left)); 
+        int right = Math.max(0,findMaxPathSum(root.right)); 
+        //updating max
+        maximumPathSum = Math.max(maximumPathSum, left + right + root.val); 
+
+        //we want to return the maxPathSum with current val. 
+        return Math.max(left, right) + root.val; 
+    }
+}
