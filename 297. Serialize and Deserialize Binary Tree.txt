@@ -1,0 +1,43 @@
+
+public class Codec {
+    //This delimiter will seperate our node vals within our array, 
+    String delimiter = ","; 
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder(); 
+        buildString(root,sb);
+        return sb.toString(); 
+    }
+    //Add nodes to our stringbuilder through pre-order traversal. 
+    public void buildString(TreeNode root, StringBuilder sb){
+        if(root == null){ 
+        sb.append("null").append(delimiter);
+        } else{
+        sb.append(root.val).append(delimiter); 
+        buildString(root.left, sb);
+        buildString(root.right, sb); 
+        }
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        //Utilizing a queue to add nodes to our tree as needed.
+        Queue<String> nodes = new LinkedList<>();
+        //adding all list values and removing our delimiters.
+        nodes.addAll(Arrays.asList(data.split(delimiter))); 
+        return buildTree(nodes);
+    }
+
+    //Building our tree in a pre-order fashion
+    public TreeNode buildTree(Queue<String> nodes){
+        String currVal = nodes.remove();
+        if(currVal.equals("null"))return null; 
+
+        TreeNode currNode = new TreeNode(Integer.valueOf(currVal)); 
+        currNode.left = buildTree(nodes); 
+        currNode.right = buildTree(nodes); 
+
+        return currNode;
+    }
+}
+
