@@ -1,0 +1,28 @@
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        #edge case if they're not the same length immediately return 0 
+        if len(s) != len(t):
+             return False
+
+        char_dict = {} 
+        #iterate through s and add all it's chars to a dict char counter
+        for char in s:
+            if char in char_dict: 
+                char_dict[char] += 1 
+            else: 
+                char_dict[char] = 1
+        
+        for char in t:
+            if char in char_dict:
+                char_dict[char] -= 1 
+            # if we don't find the char in the dict we know they're not anagrams
+            else:
+                return False
+        
+        # iterate through the dict and check to see if they cancelled each other out. AKA equal char counts -> anagram
+        for char_count in char_dict.values():
+            if  char_count != 0: 
+                return False
+
+        return True
+        
